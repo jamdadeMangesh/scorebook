@@ -1,0 +1,147 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+// Initial State based on your provided structure
+const initialState: Match = {
+  id: "",
+  statistics: {
+    team1: "",
+    team2: "",
+    tossWonBy: "",
+    batFirst: "",
+    playersCount: 0,
+    remarks: "",
+  },
+  innings: [
+    {
+      id: "",
+      isCurrentInning: false,
+      score: 0,
+      wickets: 0,
+      overs: 0,
+      battingFirstTeamName: "",
+      bowlingFirstTeamName: "",
+      extras: {
+        wides: 0,
+        noBalls: 0,
+        byes: 0,
+        legByes: 0,
+      },
+      batting: [{
+        id: "",
+        batsmanName: "",
+        runs: 0,
+        balls: 0,
+        fours: 0,
+        sixes: 0,
+        eights: 0,
+        strikeRate: 0,
+        out: "",
+        bowler: "",
+      }],
+      bowling: [{
+        id: "0",
+        bowlerName: "",
+        overs: 0,
+        maiden: 0,
+        runs: 0,
+        wicket: 0,
+        economyRate: 0,
+        extras: 0,
+        totalRuns: 0,
+        totalWicket: 0,
+      }]
+    }
+  ]
+};
+
+// Create slice
+const matchSlice = createSlice({
+  name: 'match',
+  initialState,
+  reducers: {
+    // Update match statistics
+    updateStatistics: (state, action: PayloadAction<Statistics>) => {
+      state.statistics = action.payload;
+    },
+
+    // Set the match ID
+    setMatchId: (state, action: PayloadAction<string>) => {
+      state.id = action.payload;
+    },
+
+    // Update innings details for a specific inning
+    updateInning: (state, action: PayloadAction<{ inningId: string, inningData: Partial<Inning> }>) => {
+      const { inningId, inningData } = action.payload;
+      const inning = state.innings.find(i => i.id === inningId);
+      if (inning) {
+        Object.assign(inning, inningData); // Update inning properties
+      }
+    },
+
+    // Add a new batting entry in a specific inning
+    addBatting: (state, action: PayloadAction<{ inningId: string, batting: Batting }>) => {
+      const { inningId, batting } = action.payload;
+      const inning = state.innings.find(i => i.id === inningId);
+      if (inning) {
+        inning.batting.push(batting); // Add new batsman to the batting array
+      }
+    },
+
+    // Update a batting entry
+    updateBatting: (state, action: PayloadAction<{ inningId: string, playerId: string, battingData: Partial<Batting> }>) => {
+      const { inningId, playerId, battingData } = action.payload;
+      const inning = state.innings.find(i => i.id === inningId);
+      if (inning) {
+        const player = inning.batting.find(b => b.id === playerId);
+        if (player) {
+          Object.assign(player, battingData); // Update batting stats
+        }
+      }
+    },
+
+    // Add a new bowling entry in a specific inning
+    addBowling: (state, action: PayloadAction<{ inningId: string, bowling: Bowling }>) => {
+      const { inningId, bowling } = action.payload;
+      const inning = state.innings.find(i => i.id === inningId);
+      if (inning) {
+        inning.bowling.push(bowling); // Add new bowler to the bowling array
+      }
+    },
+
+    // Update a bowling entry
+    updateBowling: (state, action: PayloadAction<{ inningId: string, bowlerId: string, bowlingData: Partial<Bowling> }>) => {
+      const { inningId, bowlerId, bowlingData } = action.payload;
+      const inning = state.innings.find(i => i.id === inningId);
+      if (inning) {
+        const bowler = inning.bowling.find(b => b.id === bowlerId);
+        if (bowler) {
+          Object.assign(bowler, bowlingData); // Update bowling stats
+        }
+      }
+    },
+
+    // Update extras in a specific inning
+    updateExtras: (state, action: PayloadAction<{ inningId: string, extras: Extras }>) => {
+      const { inningId, extras } = action.payload;
+      const inning = state.innings.find(i => i.id === inningId);
+      if (inning) {
+        inning.extras = extras; // Update extras
+      }
+    }
+  }
+});
+
+// Export actions
+export const {
+  updateStatistics,
+  setMatchId,
+  updateInning,
+  addBatting,
+  updateBatting,
+  addBowling,
+  updateBowling,
+  updateExtras
+} = matchSlice.actions;
+
+// Export reducer
+export default matchSlice.reducer;
