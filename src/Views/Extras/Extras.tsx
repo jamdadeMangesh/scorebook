@@ -7,7 +7,7 @@ import { add_extras } from "../../store/Slice/MatchSlice";
 import { IExtrasTRuns } from "../../interfaces/MatchData";
 
 const Extras = () => {
-	const { getCurrentInning, isNoBattingdata, getBatsmanOnStrike, getBowlerOnStrike } = useFunctions();
+	const { getCurrentInning, isNoBattingdata, getBatsmanOnStrike, getBowlerOnStrike, isNoBowligdata } = useFunctions();
 	const dispatch = useDispatch()
 	const [extras, setExtras] = useState("");
 	const [extrasRuns, setExtrasRuns] = useState<IExtrasTRuns>({
@@ -65,12 +65,14 @@ const Extras = () => {
 		],
 	};
 
-	console.log("extras:", extras);
-	console.log("extrasRuns:", extrasRuns);
-
 	const closePopover = () => {
 		setShowPopOver(false);
 		setExtras('');
+		setExtrasRuns({
+			Type: "",
+			Runs: 0,
+			selected: "",
+		})
 	}
 
 	const addExtras = () => {
@@ -88,7 +90,7 @@ const Extras = () => {
 		<>
 			<div className="flex justify-between items-center border-b pb-2 border-gray-300 border-spacing-2">
 				<div className="text-sm flex items-center">Extras</div>
-				{!isNoBattingdata && extrasRuns.selected !== "" && (
+				{!isNoBattingdata && extrasRuns.selected !== "" && !isNoBowligdata && (
 					<Button color="blue" text="Add Extras" classes="ml-2" handleClick={addExtras} />
 				)}
 			</div>

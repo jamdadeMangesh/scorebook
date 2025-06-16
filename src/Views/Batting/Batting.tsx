@@ -19,23 +19,15 @@ const Batting = () => {
 
     //const currentInningId = allState.find((values) => values.firstInning ? values.id : null);
     //const currentInningId = Object.fromEntries(allState).filter((value: any) => value.entries ? value.id : null);
-    //console.log('currentInningId:', currentInningId?.id);
+
+    console.log('getBattingData:', getBattingData);
 
     const getCurrentInningBattingData = () => {
         return getBattingData[getCurrentInning]?.battingData
-        // return getCurrentInning === "inning1"
-        //     ? getBattingData?.inning1
-        //     : getBattingData?.inning2;
-        // if (getCurrentInning === "Inning1") {
-        //     return getBattingData?.inning1
-        // }
-        // else {
-        //     return getBattingData?.inning2
-        // }
     };
 
     const addBatsman = () => {
-        //console.log('battername:', batterName);
+    
 
         const batterInfo: BattingData = {
             id: nanoid(),
@@ -51,7 +43,7 @@ const Batting = () => {
             onStrike:
                 getCurrentInningBattingData()?.length === 0 ? true : false,
         };
-        //console.log("BatterInfo:", batterInfo);
+        
         // const battingExtras: Extras = {
         //     wides: 0,
         //     noBalls: 0,
@@ -76,7 +68,7 @@ const Batting = () => {
             <div className="flex justify-between items-center border-b pb-2 border-gray-300 border-spacing-2">
                 <div className="text-xs flex items-center">
                     <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-300 border border-green-300">
-                        {getStatistics?.teamBatting}
+                        {getCurrentInning === "inning1" ? getStatistics?.teamBatting : getStatistics?.teamBattingSecond}
                     </span>
                     <span>
                         <PiDotFill />
@@ -111,7 +103,7 @@ const Batting = () => {
                         <table className="w-full text-xs rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-white bg-gray-500 text-center">
                                 <tr>
-                                    <th scope="col" className="px-3 py-2 w-[40%] text-left">
+                                    <th scope="col" className="px-3 py-2 w-[30%] text-left">
                                         Batter name
                                     </th>
                                     <th scope="col" className="w-[5%]">
@@ -132,10 +124,10 @@ const Batting = () => {
                                     <th scope="col" className="w-[5%]">
                                         SR
                                     </th>
-                                    <th scope="col" className="w-[10%]">
+                                    <th scope="col" className="w-[15%]">
                                         Out
                                     </th>
-                                    <th scope="col" className="w-[10%]">
+                                    <th scope="col" className="w-[15%]">
                                         Bowler
                                     </th>
                                 </tr>
@@ -144,12 +136,13 @@ const Batting = () => {
                                 {getCurrentInningBattingData().map(
                                     (batter: BattingData) => (
                                         <tr
-                                            className={` ${batter.out !== '-' ? "bg-red-200 cursor-none pointer-events-none" : "bg-white "} border-b dark:border-gray-700`}
+                                            className={` ${batter.out !== '-' ? "bg-red-100 cursor-none pointer-events-none" : "bg-white "} border-b dark:border-gray-700 disabled:bg-black`}
                                             key={batter.id}
+                                            aria-disabled
                                         >
                                             <th
                                                 scope="row"
-                                                className="text-left px-3 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white w-[40%]"
+                                                className="text-left px-3 py-1.5 font-medium text-gray-900 whitespace-nowrap dark:text-white w-[30%]"
                                             >
                                                 <span className="flex items-center">
                                                     <span
@@ -171,8 +164,8 @@ const Batting = () => {
                                             <td className="w-[5%]">{batter.fours}</td>
                                             <td className="w-[5%]">{batter.sixes}</td>
                                             <td className="w-[5%]">{batter.eights}</td>
-                                            <td className="w-[5%]">{batter.strikeRate}</td>
-                                            <td className="w-[10%]">{batter.out}</td>
+                                            <td className="w-[10%]">{batter.strikeRate}</td>
+                                            <td className="w-[15%]">{batter.out}</td>
                                             <th scope="col" className="w-[10%]">
                                                 {batter.bowler}
                                             </th>
@@ -184,7 +177,7 @@ const Batting = () => {
                     </div>
                 </>
             ) : (
-                <div className="text-center p-4">Add new batsman</div>
+                <div className="text-center p-4 text-xs">Add new batsman</div>
             )}
         </>
     );

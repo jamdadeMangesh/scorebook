@@ -1,7 +1,42 @@
 import React from "react";
 import { PiDotFill } from "react-icons/pi";
+import useFunctions from "../../hooks/useFunctions";
+import { calculateOvers } from "../../interfaces/MatchData";
 
 const Statistics = () => {
+    const { getCurrentInning, getBattingData, getBowlingData } =
+		useFunctions();
+
+    const currentInningScore = getBattingData[getCurrentInning]?.score;
+    const totalWickets = getBattingData[getCurrentInning]?.wickets;
+    const overs = getBattingData[getCurrentInning]?.overs;
+    const totalOvers: any = calculateOvers(overs);
+
+    console.log('getBowlingData;', getBowlingData);
+
+    const getMaximumRunsBatsman = () => {
+        const moreRunsData = getBattingData[getCurrentInning]?.battingData?.reduce((maxBatsman, batsman) => {
+            return batsman.runs > maxBatsman.runs ? batsman : maxBatsman;
+         }, {runs : 0});
+
+         return { 
+            batsman: moreRunsData?.batsmanName,
+            runs: moreRunsData?.runs
+         }
+    }
+
+    const getMaximumWicketsBowler = () => {
+        const moreWicketsData = getBowlingData[getCurrentInning]?.bowlingData?.reduce((maxWickets, bowler) => {
+            return bowler.wicket > maxWickets.wicket ? bowler : maxWickets;
+         }, {wicket : 0});
+
+         return { 
+            bowler: moreWicketsData?.bowlerName,
+            wickets: moreWicketsData?.wicket
+         }
+    }
+
+    console.log('bowler data;', getMaximumWicketsBowler());
     return (
         <>
             <div className="flex justify-between items-center border-b pb-2 border-gray-300 border-spacing-2">
@@ -17,11 +52,11 @@ const Statistics = () => {
                     </div>
                     <div className="px-3 py-2">
                         <p className=" flex items-center">
-                            Score: 45/4{" "}
+                            Score: {currentInningScore}/{totalWickets}{" "}
                             <span>
                                 <PiDotFill />
                             </span>{" "}
-                            4 overs
+                            {totalOvers} overs
                         </p>
                     </div>
                 </div>
@@ -33,9 +68,9 @@ const Statistics = () => {
                     </div>
                     <div className="px-3 py-2">
                         <p>
-                            Mangesh Jamdade :{" "}
+                            {getMaximumRunsBatsman().batsman} :{" "}
                             <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-300 border border-green-300">
-                                40 Runs
+                                {getMaximumRunsBatsman().runs} Runs
                             </span>
                         </p>
                     </div>
@@ -48,9 +83,9 @@ const Statistics = () => {
                     </div>
                     <div className="px-3 py-2">
                         <p>
-                            Mangesh Jamdade :{" "}
+                            {getMaximumWicketsBowler().bowler} :{" "}
                             <span className="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-300 border border-red-300">
-                                4 wickets
+                                {getMaximumWicketsBowler().wickets} wickets
                             </span>
                         </p>
                     </div>

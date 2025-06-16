@@ -47,6 +47,9 @@ const useFunctions = () => {
     const isNoBattingdata =
         getBattingData[getCurrentInning]?.battingData?.length === 0;
 
+    const isNoBowligdata =
+        getBowlingData[getCurrentInning]?.bowlingData?.length === 0;
+
     return {
         getStatistics,
         getCurrentInning,
@@ -56,6 +59,7 @@ const useFunctions = () => {
         getBowlerOnStrike,
         getCurrentInningBattingData,
         isNoBattingdata,
+        isNoBowligdata,
         getCurrntMatchId
     };
 };

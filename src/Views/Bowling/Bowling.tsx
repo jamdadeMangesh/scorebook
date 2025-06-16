@@ -39,7 +39,6 @@ const Bowling = () => {
 		);
 		setBowlerName("");
 	};
-	console.log("bowler name:", bowlerName);
 
 	const changeBowler = (bowlerId: string) => {
 		dispatch(
@@ -47,12 +46,15 @@ const Bowling = () => {
 		);
 	};
 
+	const calculateEconomyRate = (runs, overs) => {
+		return (runs/overs).toFixed(2);
+	}
 	return (
 		<>
 			<div className="flex justify-between items-center border-b pb-2 border-gray-300 border-spacing-2">
 				<div className="text-xs flex items-center">
 					<span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-green-300">
-						{getStatistics?.teamBowling}
+						{getCurrentInning === "inning1" ? getStatistics?.teamBowling : getStatistics?.teamBowlingSecond}
 					</span>
 					<span>
 						<PiDotFill />
@@ -119,7 +121,7 @@ const Bowling = () => {
 									>
 										<th
 											scope="row"
-											className="text-left px-3 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white w-[20%] "
+											className="text-left px-3 py-1.5 font-medium text-gray-900 whitespace-nowrap dark:text-white w-[20%] "
 										>
 											<span className="flex items-center">
 												<span
@@ -140,7 +142,7 @@ const Bowling = () => {
 										<td className="w-[10%]">{bowler.maiden}</td>
 										<td className="w-[10%]">{bowler.runs}</td>
 										<td className="w-[10%]">{bowler.wicket}</td>
-										<td className="w-[10%]">{bowler.economyRate}</td>
+										<td className="w-[10%]">{calculateEconomyRate(bowler.runs, calculateOvers(bowler.overs))}</td>
 										<td className="w-[10%]">{bowler.extras}</td>
 										<th scope="col" className="w-[10%]">
 											{bowler.runs + bowler.extras}
@@ -152,7 +154,7 @@ const Bowling = () => {
 					</div>
 				</>
 			) : (
-				<div className="text-center p-4">Add new Bowler</div>
+				<div className="text-center p-4 text-xs">Add new Bowler</div>
 			)}
 		</>
 	);
