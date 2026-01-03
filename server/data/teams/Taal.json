@@ -1,0 +1,16 @@
+{
+  "teamName": "Taal",
+  "players": [
+    {
+      "id": "630fd2c6-c234-457e-a1b9-c9a0f476acd8",
+      "name": "Dinesh Khandagale",
+      "addedAt": "2026-01-01T13:28:24.731Z"
+    },
+    {
+      "id": "57f168cc-82c5-46ff-b343-6b4bcf5a496c",
+      "name": "Nikhil Phatak",
+      "addedAt": "2026-01-02T14:40:51.158Z"
+    }
+  ],
+  "createdAt": "2026-01-01T12:28:28.712Z"
+}

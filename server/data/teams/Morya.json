@@ -1,0 +1,16 @@
+{
+  "teamName": "Morya",
+  "players": [
+    {
+      "id": "c4fb7ec8-7732-4e32-bf0b-d7b9b124a9ca",
+      "name": "Mangesh Jamdade",
+      "addedAt": "2026-01-01T13:26:04.622Z"
+    },
+    {
+      "id": "aea93083-3e44-4323-a094-7f9d9d33eb9b",
+      "name": "Ketan Mavle",
+      "addedAt": "2026-01-02T14:40:40.213Z"
+    }
+  ],
+  "createdAt": "2026-01-01T12:25:43.470Z"
+}
