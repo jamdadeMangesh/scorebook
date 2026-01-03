@@ -32,14 +32,14 @@ const Score = () => {
 
     //add score to redux toolkit
     const addScore = () => {
-        dispatch(
-            add_score({
-                currentInning: getCurrentInning,
-                score: score,
-                onStrikeBatsmanId: getBatsmanOnStrike(),
-                onStrikeBowlerId: getBowlerOnStrike(),
-            })
-        );
+        // dispatch(
+        //     add_score({
+        //         currentInning: getCurrentInning,
+        //         score: score,
+        //         onStrikeBatsmanId: getBatsmanOnStrike(),
+        //         onStrikeBowlerId: getBowlerOnStrike(),
+        //     })
+        // );
         if (score >= 6) {
             setIsExploding(true);
         }
@@ -60,7 +60,7 @@ const Score = () => {
                 )}
             </div>
             <div className="flex mt-4 text-3xl text-gray-600 flex-wrap">
-                { scoreArray.map((item: number) => (
+                {scoreArray.map((item: number) => (
                     <div key={item} onClick={() => setScore(item)} className={`${score === item && "bg-purple-700 text-white border-purple-700 hover:text-white"} mr-1.5 mb-1.5 border-[2px] border-gray-400 w-[30px] h-[30px] flex justify-center items-center text-base font-bold rounded-full text-gray-400 cursor-pointer hover:border-purple-700 hover:text-purple-700`}>
                         {item}
                     </div>

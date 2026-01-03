@@ -4,13 +4,13 @@ import { IoIosClose } from "react-icons/io";
 import useFunctions from "../../hooks/useFunctions";
 import { useDispatch } from "react-redux";
 import { add_extras } from "../../store/Slice/MatchSlice";
-import { IExtrasTRuns } from "../../interfaces/MatchData";
+//import { IExtrasTRuns } from "../../interfaces/MatchData";
 
 const Extras = () => {
 	const { getCurrentInning, isNoBattingdata, getBatsmanOnStrike, getBowlerOnStrike, isNoBowligdata } = useFunctions();
 	const dispatch = useDispatch()
 	const [extras, setExtras] = useState("");
-	const [extrasRuns, setExtrasRuns] = useState<IExtrasTRuns>({
+	const [extrasRuns, setExtrasRuns] = useState<any>({
 		Type: "",
 		Runs: 0,
 		selected: "",
@@ -76,7 +76,7 @@ const Extras = () => {
 	}
 
 	const addExtras = () => {
-		dispatch(add_extras({ currentInning: getCurrentInning, extrasRuns: extrasRuns, batsmanId: getBatsmanOnStrike(), bowlerId: getBowlerOnStrike() }))
+		//dispatch(add_extras({ currentInning: getCurrentInning, extrasRuns: extrasRuns, batsmanId: getBatsmanOnStrike(), bowlerId: getBowlerOnStrike() }))
 		setShowPopOver(false);
 		setExtras('');
 		setExtrasRuns({

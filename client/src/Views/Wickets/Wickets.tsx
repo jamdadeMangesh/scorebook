@@ -31,14 +31,14 @@ const Wickets = () => {
 
     const addWicket = () => {
         setIsExploding(true);
-        dispatch(
-            add_wicket({
-                currentInning: getCurrentInning,
-                wicketType: wickets,
-                batsmanId: getBatsmanOnStrike(),
-                bowlerId: getBowlerOnStrike(),
-            })
-        );
+        // dispatch(
+        //     add_wicket({
+        //         currentInning: getCurrentInning,
+        //         wicketType: wickets,
+        //         batsmanId: getBatsmanOnStrike(),
+        //         bowlerId: getBowlerOnStrike(),
+        //     })
+        // );
         setWickets('')
     };
 
@@ -54,7 +54,7 @@ const Wickets = () => {
                 />}
             </div>
             <div className="flex mt-5 text-xs text-gray-600 flex-wrap">
-                
+
                 {/* <div
                     className={` ${wickets === "Bowled" ? "text-white bg-red-500" : "text-red-600"
                         } px-4 py-1.5 mr-2 mb-2 border cursor-pointer rounded-xl border-red-500  hover:bg-red-500 hover:text-white`}

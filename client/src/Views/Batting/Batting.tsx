@@ -5,7 +5,7 @@ import { PiDotFill } from "react-icons/pi";
 import { BattingData } from "../../interfaces/MatchData";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { add_batsman, switch_strike } from "../../store/Slice/MatchSlice";
+import { addBatsman, switch_strike, switchStrike } from "../../store/Slice/MatchSlice";
 import useFunctions from "../../hooks/useFunctions";
 import { getSingleTeamPlayers, Team } from "../../api/teamApi";
 
@@ -22,7 +22,7 @@ const Batting = () => {
     //const currentInningId = allState.find((values) => values.firstInning ? values.id : null);
     //const currentInningId = Object.fromEntries(allState).filter((value: any) => value.entries ? value.id : null);
 
-    console.log('getCurrentBattingTeam:', getCurrentBattingTeam);
+    console.log('getCurrentInning:', getCurrentInning);
 
     useEffect(() => {
         const getBattingTeamPlayers = async () => {
@@ -37,11 +37,9 @@ const Batting = () => {
 
     console.log('battingTeamPlayers:', battingTeamPlayers);
 
-    const getCurrentInningBattingData = () => {
-        return getBattingData[getCurrentInning]?.battingData
-    };
 
-    const addBatsman = () => {
+
+    const onClickAddBatsman = () => {
 
 
         const batterInfo: BattingData = {
@@ -56,26 +54,22 @@ const Batting = () => {
             out: "-",
             bowler: "-",
             onStrike:
-                getCurrentInningBattingData()?.length === 0 ? true : false,
+                getBattingData?.length === 0 ? true : false,
         };
 
-        // const battingExtras: Extras = {
-        //     wides: 0,
-        //     noBalls: 0,
-        //     byes: 0,
-        //     legByes: 0
-        // }
-        dispatch(
-            add_batsman({ currentInning: getCurrentInning, batsmanData: batterInfo })
-        );
+
+        dispatch(addBatsman({ inning: getCurrentInning, batsman: batterInfo }));
+
         setBatterName("");
     };
 
     const changeStrike = (batterId: string) => {
         //currentInning
-        dispatch(
-            switch_strike({ currentInning: getCurrentInning, batterId: batterId })
-        );
+        // dispatch(
+        //     switch_strike({ currentInning: getCurrentInning, batterId: batterId })
+        // );
+        console.log('getCurrentInning getCurrentInning:', getCurrentInning);
+        dispatch(switchStrike({ inning: getCurrentInning }));
     };
 
     return (
@@ -118,7 +112,7 @@ const Batting = () => {
                         /> */}
                         <FaCircleCheck
                             className="absolute top-[5px] right-5 text-green-700 cursor-pointer"
-                            onClick={addBatsman}
+                            onClick={onClickAddBatsman}
                         />
                     </div>
                     {/* <button className="text-white inline-flex items-center  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-2 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Switch Batsman</button> */}
@@ -126,7 +120,7 @@ const Batting = () => {
                 </div>
             </div>
 
-            {getCurrentInningBattingData()?.length > 0 ? (
+            {getBattingData?.length > 0 ? (
                 <>
                     <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-2">
                         <table className="w-full text-xs rtl:text-right text-gray-500 dark:text-gray-400">
@@ -162,7 +156,7 @@ const Batting = () => {
                                 </tr>
                             </thead>
                             <tbody className="text-[11px] text-center">
-                                {getCurrentInningBattingData().map(
+                                {getBattingData.map(
                                     (batter: BattingData) => (
                                         <tr
                                             className={` ${batter.out !== '-' ? "bg-red-100 cursor-none pointer-events-none" : "bg-white "} border-b dark:border-gray-700 disabled:bg-black`}

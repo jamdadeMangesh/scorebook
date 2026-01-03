@@ -18,12 +18,12 @@ const Dashboard = () => {
 
     const switchInning = () => {
         if (getStatistics.isFirstInningCompleteed) {
-            dispatch(
-                switch_inning({
-                    matchId: getCurrntMatchId,
-                    currentInning: getCurrentInning,
-                })
-            );
+            // dispatch(
+            //     switch_inning({
+            //         matchId: getCurrntMatchId,
+            //         currentInning: getCurrentInning,
+            //     })
+            // );
         } else {
             toast.warn("First inning is not completed!", {
                 position: "top-center",
@@ -39,9 +39,9 @@ const Dashboard = () => {
     };
 
     const calculateToWinRuns = () => {
-        
-        if(getCurrentInning === "inning2") {
-            return getStatistics.teamBattingSecond +" needs "+ (getBattingData?.inning1?.score + 1) +" to win in "+ 7*6 + "  balls";
+
+        if (getCurrentInning === "inning2") {
+            return getStatistics.teamBattingSecond + " needs " + (getBattingData?.inning1?.score + 1) + " to win in " + 7 * 6 + "  balls";
         }
     }
 

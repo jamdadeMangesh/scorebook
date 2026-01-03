@@ -4,7 +4,7 @@ import { PiDotFill } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
 import { BowlingData, calculateOvers } from "../../interfaces/MatchData";
 import { nanoid } from "@reduxjs/toolkit";
-import { add_bowler, switch_bowler } from "../../store/Slice/MatchSlice";
+import { addBowler, switchBowler } from "../../store/Slice/MatchSlice";
 import useFunctions from "../../hooks/useFunctions";
 import { getSingleTeamPlayers, Team } from "../../api/teamApi";
 
@@ -17,28 +17,27 @@ const Bowling = () => {
 
 	const { getStatistics, getCurrentInning, getBowlingData, getCurrentBowlingTeam } = useFunctions();
 
-	const getCurrentInningBowlingData = () => {
-		return getBowlingData[getCurrentInning]?.bowlingData;
-	};
+	// const getCurrentInningBowlingData = () => {
+	// 	return getBowlingData[getCurrentInning]?.bowlingData;
+	// };
 
-	const addBowler = () => {
+	const onClickAddBowler = () => {
 		const bowlerInfo: BowlingData = {
 			id: nanoid(),
 			bowlerName: bowlerName,
-			overs: 0,
-			maiden: 0,
+			balls: 0,
+			//overs: 0,
+			//maiden: 0,
 			runs: 0,
-			wicket: 0,
-			economyRate: 0,
+			wickets: 0,
+			//economyRate: 0,
 			extras: 0,
-			totalRuns: 0,
-			totalWicket: 0,
-			currentBowler: getCurrentInningBowlingData()?.length === 0 ? true : false,
+			//totalRuns: 0,
+			//totalWicket: 0,
+			currentBowler: getBowlingData?.length === 0 ? true : false,
 		};
 
-		dispatch(
-			add_bowler({ currentInning: currentInning, bowlerData: bowlerInfo })
-		);
+		dispatch(addBowler({ inning: getCurrentInning, bowler: bowlerInfo }));
 		setBowlerName("");
 	};
 
@@ -57,11 +56,11 @@ const Bowling = () => {
 
 	const changeBowler = (bowlerId: string) => {
 		dispatch(
-			switch_bowler({ currentInning: getCurrentInning, bowlerId: bowlerId })
+			switchBowler({ inning: getCurrentInning, bowlerId: bowlerId })
 		);
 	};
 
-	const calculateEconomyRate = (runs, overs) => {
+	const calculateEconomyRate = (runs: any, overs: any) => {
 		return (runs / overs).toFixed(2);
 	}
 	return (
@@ -103,13 +102,13 @@ const Bowling = () => {
 						</select>
 						<FaCircleCheck
 							className="absolute top-[5px] right-5 text-green-700 cursor-pointer"
-							onClick={addBowler}
+							onClick={onClickAddBowler}
 						/>
 					</div>
 				</div>
 			</div>
 
-			{getCurrentInningBowlingData()?.length > 0 ? (
+			{getBowlingData?.length > 0 ? (
 				<>
 					<div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-2">
 						<table className="w-full text-xs rtl:text-right text-gray-500">
@@ -121,9 +120,9 @@ const Bowling = () => {
 									<th scope="col" className="w-[5%]">
 										O
 									</th>
-									<th scope="col" className="w-[5%]">
+									{/* <th scope="col" className="w-[5%]">
 										M
-									</th>
+									</th> */}
 									<th scope="col" className="w-[5%]">
 										R
 									</th>
@@ -142,7 +141,7 @@ const Bowling = () => {
 								</tr>
 							</thead>
 							<tbody className="text-[11px] text-center">
-								{getCurrentInningBowlingData()?.map((bowler: BowlingData) => (
+								{getBowlingData?.map((bowler: BowlingData) => (
 									<tr
 										className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
 										key={bowler.id}
@@ -166,11 +165,11 @@ const Bowling = () => {
 												)}
 											</span>
 										</th>
-										<td className="w-[10%]">{calculateOvers(bowler.overs)}</td>
-										<td className="w-[10%]">{bowler.maiden}</td>
+										<td className="w-[10%]">{calculateOvers(bowler.balls)}</td>
+										{/* <td className="w-[10%]">{bowler.maiden}</td> */}
 										<td className="w-[10%]">{bowler.runs}</td>
-										<td className="w-[10%]">{bowler.wicket}</td>
-										<td className="w-[10%]">{calculateEconomyRate(bowler.runs, calculateOvers(bowler.overs))}</td>
+										<td className="w-[10%]">{bowler.wickets}</td>
+										<td className="w-[10%]">{calculateEconomyRate(bowler.runs, calculateOvers(bowler.balls))}</td>
 										<td className="w-[10%]">{bowler.extras}</td>
 										<th scope="col" className="w-[10%]">
 											{bowler.runs + bowler.extras}

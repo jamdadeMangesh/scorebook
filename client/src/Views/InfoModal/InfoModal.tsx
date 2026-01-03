@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Inning, Match } from "../../interfaces/MatchData";
-import { add_statistics, set_inning } from "../../store/Slice/MatchSlice";
+import { Inning, Match, Statistics } from "../../interfaces/MatchData";
+import { add_statistics, set_inning, setMatch, setMatchTeams, setToss } from "../../store/Slice/MatchSlice";
 import { getTeams, Team } from "../../api/teamApi";
 import { notify } from "../../Components/Toast/Toast";
+
 
 interface InfoModalProps {
     showModal: boolean;
@@ -42,24 +43,29 @@ const InfoModal = ({ showModal, setShowModal }: InfoModalProps) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const submitForm = (data) => {
+    const submitForm = (data: Statistics) => {
         reset();
         //   onFormSubmit(data);
-        const matchData = {
-            team1: data?.team1,
-            team2: data?.team2,
-            playersCount: data?.playersCount,
-            tossWonBy: data?.wonBy,
-            teamBatting: data?.teamBatting,
-            teamBowling: data?.teamBowling,
-            remarks: data?.remarks,
-            teamBattingSecond: data?.teamBowling,
-            teamBowlingSecond: data?.teamBatting,
-            isFirstInningCompleteed: false,
-        };
+        // const matchData = {
+        //     team1: data?.team1,
+        //     team2: data?.team2,
+        //     tossWonBy: data?.tossWonBy,
+        //     teamBatting: data?.teamBatting,
+        //     teamBowling: data?.teamBowling,
+        //     remarks: data?.remarks,
+        //     teamBattingSecond: data?.teamBowling,
+        //     teamBowlingSecond: data?.teamBatting,
+        //     isFirstInningCompleteed: false,
+        // };
 
         //localStorage.setItem("MatchData", JSON.stringify(matchData));
-        dispatch(add_statistics(matchData));
+        //dispatch(add_statistics(matchData));
+        console.log('form data:', data)
+        dispatch(setMatchTeams({ team1: data?.team1, team2: data?.team2 }));
+        dispatch(setToss({ tossWonBy: data?.tossWonBy, electedTo: data?.electedTo }));
+        dispatch(setMatch({ matchId: nanoid() }))
+
+
         navigate("/dashboard");
 
         const inningData = {
@@ -225,20 +231,20 @@ const InfoModal = ({ showModal, setShowModal }: InfoModalProps) => {
                             </div> */}
                             <div className="col-span-2 sm:col-span-1">
                                 <label
-                                    htmlFor="wonBy"
+                                    htmlFor="tossWonBy"
                                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                                 >
                                     Toss won by
                                 </label>
                                 <select
                                     //                                    disabled={team1Name || team2Name }
-                                    className={` ${errors.wonBy &&
+                                    className={` ${errors.tossWonBy &&
                                         "focus:outline-none focus:border-red-700 bg-red-50 border border-red-500 text-red-900"
                                         }bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 py-1.5  dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
                                     id="tossWonBy"
                                     defaultValue=""
                                     //name="exampleRequired"
-                                    {...register("wonBy", { required: true })}
+                                    {...register("tossWonBy", { required: true })}
                                 >
                                     <option value="" selected>
                                         Select Option
@@ -250,7 +256,7 @@ const InfoModal = ({ showModal, setShowModal }: InfoModalProps) => {
                                         </>
                                     )}
                                 </select>
-                                {errors.wonBy && (
+                                {errors.tossWonBy && (
                                     <span className="mt-2 text-xs text-red-600 dark:text-red-500">
                                         This is required!
                                     </span>
@@ -259,37 +265,34 @@ const InfoModal = ({ showModal, setShowModal }: InfoModalProps) => {
 
                             <div className="col-span-2 sm:col-span-1">
                                 <label
-                                    htmlFor="teamBatting"
+                                    htmlFor="electedTo"
                                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                                 >
-                                    Which team is batting
+                                    Elected to
                                 </label>
                                 <select
-                                    className={` ${errors.teamBatting &&
+                                    className={` ${errors.electedTo &&
                                         "focus:outline-none focus:border-red-700 bg-red-50 border border-red-500 text-red-900"
                                         }bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 py-1.5  dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
-                                    id="teamBatting"
+                                    id="electedTo"
                                     defaultValue=""
                                     //name="exampleRequired"
-                                    {...register("teamBatting", { required: true })}
+                                    {...register("electedTo", { required: true })}
                                 >
                                     <option value="" selected>
                                         Select Option
                                     </option>
-                                    {team1Name && team2Name && (
-                                        <>
-                                            <option value={team1Name}>{team1Name}</option>
-                                            <option value={team2Name}>{team2Name}</option>
-                                        </>
-                                    )}
+
+                                    <option value="Batting">Batting</option>
+                                    <option value="Bowling">Bowling</option>
                                 </select>
-                                {errors.teamBatting && (
+                                {errors.electedTo && (
                                     <span className="mt-2 text-xs text-red-600 dark:text-red-500">
                                         This is required!
                                     </span>
                                 )}
                             </div>
-                            <div className="col-span-2 sm:col-span-1">
+                            {/* <div className="col-span-2 sm:col-span-1">
                                 <label
                                     htmlFor="teamBowling"
                                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
@@ -320,7 +323,7 @@ const InfoModal = ({ showModal, setShowModal }: InfoModalProps) => {
                                         This is required!
                                     </span>
                                 )}
-                            </div>
+                            </div> */}
                             <div className="col-span-2">
                                 <label
                                     htmlFor="description"

@@ -1,74 +1,28 @@
-// export type InningKey = 'inning1' | 'inning2';
+export type InningKey = "inning1" | "inning2";
 
-// export type ExtraType = 'wide' | 'noBall' | 'byes' | 'legByes';
+export type ExtraType = "wide" | "noBall" | "byes" | "legByes";
 
-// export type WicketType =
-//   | 'bowled'
-//   | 'caught'
-//   | 'runOut'
-//   | 'stumped'
-//   | 'lbw'
-//   | 'retired';
+export type WicketType =
+  | "bowled"
+  | "caught"
+  | "runOut"
+  | "stumped"
+  | "lbw"
+  | "retired";
 
-// export interface Ball {
-//   runs: number;
-//   isLegal: boolean;
-//   extras?: {
-//     type: ExtraType;
-//     runs: number;
-//   };
-//   wicket?: {
-//     type: WicketType;
-//     batsmanId: string;
-//     bowlerId: string;
-//   };
-// }
-
-// export interface BattingData {
-//   id: string;
-//   batsmanName: string;
-//   runs: number;
-//   balls: number;
-//   fours: number;
-//   sixes: number;
-//   eights: number;
-//   strikeRate: number;
-//   onStrike: boolean;
-//   out?: string;
-//   bowler?: string;
-// }
-
-// export interface BowlingData {
-//   id: string;
-//   bowlerName: string;
-//   balls: number;
-//   runs: number;
-//   wickets: number;
-//   extras: number;
-//   currentBowler: boolean;
-// }
-
-// export interface Inning {
-//   battingData: BattingData[];
-//   bowlingData: BowlingData[];
-//   balls: Ball[];
-//   totalRuns: number;
-//   wickets: number;
-//   completed: boolean;
-// }
-
-// export interface Match {
-//   id: string;
-//   inningNumber: InningKey;
-//   innings: {
-//     inning1: Inning;
-//     inning2: Inning;
-//   };
-//   result?: {
-//     wonBy: string;
-//     description: string;
-//   };
-// }
+export interface Ball {
+  runs: number;
+  isLegal: boolean;
+  extras?: {
+    type: ExtraType;
+    runs: number;
+  };
+  wicket?: {
+    type: WicketType;
+    batsmanId: string;
+    bowlerId: string;
+  };
+}
 
 export interface BattingData {
   id: string;
@@ -79,51 +33,98 @@ export interface BattingData {
   sixes: number;
   eights: number;
   strikeRate: number;
-  out: string;
-  bowler: string;
   onStrike: boolean;
+  out?: string;
+  bowler?: string;
 }
 
 export interface BowlingData {
   id: string;
   bowlerName: string;
-  overs: number;
-  maiden: number;
+  balls: number;
   runs: number;
-  wicket: number;
-  economyRate: number;
+  wickets: number;
   extras: number;
-  totalRuns: number;
-  totalWicket: number;
   currentBowler: boolean;
 }
 
-export interface Extras {
-  wides: number;
-  noBalls: number;
-  byes: number;
-  legByes: number;
+export interface Inning {
+  battingData: BattingData[];
+  bowlingData: BowlingData[];
+  balls: Ball[];
+  totalRuns: number;
+  wickets: number;
+  completed: boolean;
 }
 
-export interface Inning {
+export interface Match {
   id: string;
-  isCurrentInning: boolean;
-  score: number;
-  wickets: number;
-  overs: number;
-  battingFirstTeamName: string;
-  bowlingFirstTeamName: string;
-  extras?: Extras;
-  batting?: BattingData[];
-  bowling?: BowlingData[];
-  firstInning: boolean;
+  inningNumber: InningKey;
+  statistics: Statistics;
+  innings: {
+    inning1: Inning;
+    inning2: Inning;
+  };
+  result?: {
+    wonBy: string;
+    description: string;
+  };
 }
+
+// export interface BattingData {
+//   id: string;
+//   batsmanName: string;
+//   runs: number;
+//   balls: number;
+//   fours: number;
+//   sixes: number;
+//   eights: number;
+//   strikeRate: number;
+//   out: string;
+//   bowler: string;
+//   onStrike: boolean;
+// }
+
+// export interface BowlingData {
+//   id: string;
+//   bowlerName: string;
+//   overs: number;
+//   maiden: number;
+//   runs: number;
+//   wicket: number;
+//   economyRate: number;
+//   extras: number;
+//   totalRuns: number;
+//   totalWicket: number;
+//   currentBowler: boolean;
+// }
+
+// export interface Extras {
+//   wides: number;
+//   noBalls: number;
+//   byes: number;
+//   legByes: number;
+// }
+
+// export interface Inning {
+//   id: string;
+//   isCurrentInning: boolean;
+//   score: number;
+//   wickets: number;
+//   overs: number;
+//   battingFirstTeamName: string;
+//   bowlingFirstTeamName: string;
+//   extras?: Extras;
+//   batting?: BattingData[];
+//   bowling?: BowlingData[];
+//   firstInning: boolean;
+// }
 
 export interface Statistics {
   team1: string;
   team2: string;
   tossWonBy: string;
-  playersCount: number;
+  electedTo: string;
   remarks: string;
   teamBatting: string;
   teamBowling: string;
@@ -132,61 +133,61 @@ export interface Statistics {
   isFirstInningCompleteed: boolean;
 }
 
-export interface Match {
-  id: string;
-  statistics: Statistics;
-  inningNumber: string;
-  result: {
-    wonBy: string;
-    resultDescription: string;
-  };
-  batting?: {
-    inning1: {
-      battingData?: BattingData[] | undefined;
-      score: number;
-      overs: number;
-      wickets: number;
-      extras?: Extras;
-      timeline: {
-        scoreTimeline: string[];
-      };
-    };
-    inning2: {
-      battingData?: BattingData[] | undefined;
-      score: number;
-      overs: number;
-      wickets: number;
-      extras?: Extras;
-      timeline: {
-        scoreTimeline: string[];
-      };
-    };
-    // inning: string;
-    // battingData?: BattingData[] | undefined;
-    // extras?: Extras;
-  };
-  bowling: {
-    inning1: {
-      bowlingData?: BowlingData[] | undefined;
-      extras?: Extras;
-    };
-    inning2: {
-      bowlingData?: BowlingData[] | undefined;
-      extras?: Extras;
-    };
-  };
-  //innings: Inning[];
-}
-export interface IExtrasTRuns {
-  Type: string;
-  Runs: number;
-  selected: string;
-}
-export const scoreMapping: { [key: number]: keyof BattingData } = {
-  4: "fours",
-  6: "sixes",
-  8: "eights",
-};
+// export interface Match {
+//   id: string;
+//   statistics: Statistics;
+//   inningNumber: string;
+//   result: {
+//     wonBy: string;
+//     resultDescription: string;
+//   };
+//   batting?: {
+//     inning1: {
+//       battingData?: BattingData[] | undefined;
+//       score: number;
+//       overs: number;
+//       wickets: number;
+//       extras?: Extras;
+//       timeline: {
+//         scoreTimeline: string[];
+//       };
+//     };
+//     inning2: {
+//       battingData?: BattingData[] | undefined;
+//       score: number;
+//       overs: number;
+//       wickets: number;
+//       extras?: Extras;
+//       timeline: {
+//         scoreTimeline: string[];
+//       };
+//     };
+//     // inning: string;
+//     // battingData?: BattingData[] | undefined;
+//     // extras?: Extras;
+//   };
+//   bowling: {
+//     inning1: {
+//       bowlingData?: BowlingData[] | undefined;
+//       extras?: Extras;
+//     };
+//     inning2: {
+//       bowlingData?: BowlingData[] | undefined;
+//       extras?: Extras;
+//     };
+//   };
+//   //innings: Inning[];
+// }
+// export interface IExtrasTRuns {
+//   Type: string;
+//   Runs: number;
+//   selected: string;
+// }
+// export const scoreMapping: { [key: number]: keyof BattingData } = {
+//   4: "fours",
+//   6: "sixes",
+//   8: "eights",
+// };
 
 export const calculateStrikerate = (runs: number, balls: number) => {
   return ((runs / balls) * 100).toFixed(2);
@@ -196,7 +197,6 @@ export const calculateStrikerate = (runs: number, balls: number) => {
 export const calculateOvers = (totalBalls: number) => {
   const overs = Math.floor(totalBalls / 6);
   const remainingBalls = totalBalls % 6;
-
   return overs + "." + remainingBalls;
 };
 

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { persistor } from "../../store/store";
 import useFunctions from "../../hooks/useFunctions";
 import { calculateOvers, Match } from "../../interfaces/MatchData";
-import { save_inning, save_match } from "../../store/Slice/MatchSlice";
+import { completeInning, save_match } from "../../store/Slice/MatchSlice";
 import {
 	Dialog,
 	DialogBackdrop,
@@ -73,7 +73,7 @@ const Header = () => {
 	};
 
 	const saveInning = () => {
-		dispatch(save_inning())
+		dispatch(completeInning())
 		setOpenConfirmModal(false);
 	};
 	// const switchInning = () => [
@@ -88,13 +88,13 @@ const Header = () => {
 	const submitSaveForm = (data) => {
 		console.log('data;', data?.matchWonBy);
 		console.log('getMatchData;', getMatchData);
-		const saveMatchData = dispatch(save_match({ matchResult: data }))
+		//const saveMatchData = dispatch(save_match({ matchResult: data }))
 		let matchList: Match[] = JSON.parse(localStorage.getItem('MatchData') || '[]');
 		console.log('matchList:', matchList);
 		matchList?.push(getMatchData);
-		if (saveMatchData) {
-			localStorage.setItem("MatchData", JSON.stringify(matchList));
-		}
+		// if (saveMatchData) {
+		// 	localStorage.setItem("MatchData", JSON.stringify(matchList));
+		// }
 		setEndMatchOpenConfirmModal(false);
 	}
 

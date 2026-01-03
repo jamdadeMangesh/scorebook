@@ -11,15 +11,23 @@ const useFunctions = () => {
   //get current inning
   const getCurrentInning = useSelector((state: any) => state.inningNumber);
 
+  console.log("getCurrentInning:", getCurrentInning);
+
   //get batting data
-  const getBattingData = useSelector((state: any) => state.batting, {
-    devModeChecks: { stabilityCheck: "never" },
-  });
+  const getBattingData = useSelector(
+    (state: any) => state.innings[getCurrentInning]?.battingData,
+    {
+      devModeChecks: { stabilityCheck: "never" },
+    }
+  );
 
   //get bowler data
-  const getBowlingData = useSelector((state: any) => state.bowling, {
-    devModeChecks: { stabilityCheck: "never" },
-  });
+  const getBowlingData = useSelector(
+    (state: any) => state.innings[getCurrentInning]?.bowlingData,
+    {
+      devModeChecks: { stabilityCheck: "never" },
+    }
+  );
 
   //get batter id whose on strike
   const getBatsmanOnStrike = () => {
