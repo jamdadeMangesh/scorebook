@@ -3,6 +3,9 @@ import { Match, Statistics } from "../interfaces/MatchData";
 import { useSelector } from "react-redux";
 
 const useFunctions = () => {
+  //get all data
+  const getAllData = useSelector((state) => state);
+
   //get all statistics
   const getStatistics: Statistics = useSelector(
     (state: any) => state?.statistics
@@ -67,6 +70,7 @@ const useFunctions = () => {
   const getCurrentBowlingTeam = getStatistics.teamBowling;
 
   return {
+    getAllData,
     getStatistics,
     getCurrentInning,
     getBattingData,

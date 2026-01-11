@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 //import { reset, switch_inning } from "../../store/Slice/MatchSlice";
 import { persistor } from "../../store/store";
 import useFunctions from "../../hooks/useFunctions";
+import useAutoSaveMatch from "../../hooks/useAutoSaveMatch";
 import { calculateOvers, Match } from "../../interfaces/MatchData";
 import { completeInning, save_match } from "../../store/Slice/MatchSlice";
 import {
@@ -17,11 +18,12 @@ import {
 import { RiHome7Fill } from "react-icons/ri";
 import Confirm from "../Confirm/Confirm";
 import { useForm } from "react-hook-form";
+import { notify } from "../Toast/Toast";
 
 
 const Header = () => {
 
-	const { getStatistics, getCurrentInning, getCurrentInningData } =
+	const { getStatistics, getCurrentInning, getCurrentInningData, getAllData } =
 		useFunctions();
 
 	const getMatchData: Match = useSelector(
@@ -59,6 +61,9 @@ const Header = () => {
 
 	};
 
+	//auto save match after 3 seconds
+	useAutoSaveMatch();
+
 	const saveInning = () => {
 		dispatch(completeInning())
 		setOpenConfirmModal(false);
@@ -92,6 +97,26 @@ const Header = () => {
 	const EndMatch = (data) => {
 
 		//setEndMatchOpenConfirmModal(false)
+	}
+
+	const onSavMatch = async () => {
+		console.log('getAllData:', getAllData);
+
+		const res = await fetch('/api/save-match', {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ matchData: getAllData })
+		})
+
+		const result = await res.json();
+
+		if (result.status === 500) {
+			notify(result.message, "error")
+		} else if (result.status === 200) {
+			notify(result.message, "success")
+		}
 	}
 	return (
 		<>
@@ -145,7 +170,7 @@ const Header = () => {
 						handleClick={() => setOpenConfirmModal(true)}
 						classes="ml-2"
 					/>
-					<Button color="blue" text="Save Match" classes="ml-2" />
+					<Button color="blue" handleClick={() => onSavMatch()} text="Save Match" classes="ml-2" />
 					<Button
 						color="red"
 						text="End Match"

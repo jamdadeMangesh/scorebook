@@ -156,7 +156,6 @@ app.post('/api/add-players', async(req,res) => {
 })
 
 //get team with players
-
 app.get('/api/get-team-players', async(req,res) => {
     try {
         const files = await fsp.readdir(TEAM_DIR);
@@ -190,7 +189,6 @@ app.get('/api/get-team-players', async(req,res) => {
 })
 
 //delete player
-
 app.delete('/api/delete-player', async(req,res) => {
     const {teamName, playerId} = req.body;
     console.log('teanmane:', teamName)
@@ -242,7 +240,6 @@ app.delete('/api/delete-player', async(req,res) => {
 })
 
 //get single team with players
-
 app.get('/api/get-single-team-players', async(req,res) => {
     const { teamName } = req.query;
 
@@ -251,9 +248,6 @@ app.get('/api/get-single-team-players', async(req,res) => {
             message: "Team name is required"
         })
     }
-
-   
-
 
     try {
          const safeFileName = teamName.replace(/[^a-z0-9_-]/gi, '_');
@@ -284,6 +278,40 @@ app.get('/api/get-single-team-players', async(req,res) => {
             message: 'Failed to fetch teams with players'
         })
     }
+})
+
+//save a match and create separate file for each match
+app.post("/api/save-match", (req,res) => {
+    const { matchData } = req.body;
+
+    if(!matchData) {
+        return res.status(400).json({
+            message: "Matchdata is required to save match"
+        }) 
+    }
+
+    const { team1, team2 } = matchData.statistics;
+    const matchId = matchData.id;
+
+    const matchFileName = `Match_${team1}_vs_${team2}_${matchId}`;
+    const filePath = path.join(MATCH_DIR, `${matchFileName}.json`);
+
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(matchData, null, 2));
+
+        res.json({
+            status: 200,
+            message: `Match between ${team1} vs ${team2} saved successfully.`
+        })    
+    } catch (error) {
+        console.error(error);
+        res.json({
+            status: 500,
+            message: 'Failed to save match data'
+        })
+    }
+    
+
 })
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`)

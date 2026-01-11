@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+
 import { useNavigate } from "react-router-dom";
 import InfoModal from "../InfoModal/InfoModal";
 //import image2 from "../../assets/cricket-bg.jpg";
@@ -9,8 +9,7 @@ var image1 = require("../../assets/cricket-bg.jpg");
 export const Home = () => {
     const [openModal, setOpenModal] = useState(false);
     const navigate = useNavigate();
-    const allData = useSelector((state) => state);
-    console.log("All Data home:", allData);
+
     return (
         <div
             style={{ backgroundImage: `url(${image1})` }}

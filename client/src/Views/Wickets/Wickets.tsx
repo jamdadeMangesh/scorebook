@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import Button from "../../Components/Button/Button";
 import useFunctions from "../../hooks/useFunctions";
 import { useDispatch } from "react-redux";
-import { add_wicket, recordBall } from "../../store/Slice/MatchSlice";
-import ConfettiExplosion from 'react-confetti-explosion';
+import { recordBall } from "../../store/Slice/MatchSlice";
 import Confetti from "../../Components/Confetti/Confetti";
 import { IoIosClose } from "react-icons/io";
 
@@ -33,18 +32,13 @@ const Wickets = () => {
     const dispatch = useDispatch();
 
     const onWicketsClick = (str: string) => {
+        setShowPopOver(false);
         if (str === "RunOut") {
             setShowPopOver(true);
         }
         setWickets(str);
-
     };
 
-
-    const onRunoutClick = (str: string) => {
-
-        setRunoutRuns(str);
-    };
 
     const runoutTypes = [
         { "name": "Rn", "value": 0 },
@@ -56,14 +50,6 @@ const Wickets = () => {
 
     const addWicket = () => {
         setIsExploding(true);
-        // dispatch(
-        //     add_wicket({
-        //         currentInning: getCurrentInning,
-        //         wicketType: wickets,
-        //         batsmanId: getBatsmanOnStrike(),
-        //         bowlerId: getBowlerOnStrike(),
-        //     })
-        // );
 
         if (wickets === 'Bowled' || wickets === 'Stumped' || wickets === 'Caught') {
             dispatch(recordBall({
@@ -102,12 +88,12 @@ const Wickets = () => {
 
     const closePopover = () => {
         setShowPopOver(false);
-        // setExtras('');
-        // setExtrasRuns({
-        // 	Type: "",
-        // 	Runs: 0,
-        // 	selected: "",
-        // })
+        setWickets('');
+        setRunoutRuns({
+            Type: "",
+            Runs: 0,
+            selected: "",
+        })
     }
 
     console.log('runoutRuns:', runoutRuns)
