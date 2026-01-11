@@ -3,13 +3,13 @@ import Button from "../../Components/Button/Button";
 import { IoIosClose } from "react-icons/io";
 import useFunctions from "../../hooks/useFunctions";
 import { useDispatch } from "react-redux";
-import { add_extras } from "../../store/Slice/MatchSlice";
+import { add_extras, recordBall } from "../../store/Slice/MatchSlice";
 //import { IExtrasTRuns } from "../../interfaces/MatchData";
 
 const Extras = () => {
 	const { getCurrentInning, isNoBattingdata, getBatsmanOnStrike, getBowlerOnStrike, isNoBowligdata } = useFunctions();
 	const dispatch = useDispatch()
-	const [extras, setExtras] = useState("");
+	const [extras, setExtras] = useState('');
 	const [extrasRuns, setExtrasRuns] = useState<any>({
 		Type: "",
 		Runs: 0,
@@ -75,8 +75,37 @@ const Extras = () => {
 		})
 	}
 
+	console.log('extras:', extras)
+	console.log('extrasRuns:', extrasRuns)
+
 	const addExtras = () => {
 		//dispatch(add_extras({ currentInning: getCurrentInning, extrasRuns: extrasRuns, batsmanId: getBatsmanOnStrike(), bowlerId: getBowlerOnStrike() }))
+		if (extrasRuns.Type === 'byes' || extrasRuns.Type === 'legByes') {
+			dispatch(recordBall({
+				inning: getCurrentInning,
+				ball: {
+					batRuns: 0,
+					isLegal: true,
+					extras: {
+						type: extrasRuns.Type,
+						runs: extrasRuns.Runs
+					}
+				}
+			}))
+		} else if (extrasRuns.Type === 'wide' || extrasRuns.Type === 'noball') {
+			dispatch(recordBall({
+				inning: getCurrentInning,
+				ball: {
+					batRuns: 0,
+					isLegal: false,
+					extras: {
+						type: extrasRuns.Type,
+						runs: extrasRuns.Runs
+					}
+				}
+			}))
+		}
+
 		setShowPopOver(false);
 		setExtras('');
 		setExtrasRuns({

@@ -14,16 +14,14 @@ import {
 	DialogPanel,
 	DialogTitle,
 } from "@headlessui/react";
-import { HiOutlineExclamationTriangle } from "react-icons/hi2";
 import { RiHome7Fill } from "react-icons/ri";
 import Confirm from "../Confirm/Confirm";
 import { useForm } from "react-hook-form";
 
 
 const Header = () => {
-	const storedData = JSON.parse(localStorage.getItem("MatchData") || "[]");
 
-	const { getStatistics, getCurrentInning, getBattingData } =
+	const { getStatistics, getCurrentInning, getCurrentInningData } =
 		useFunctions();
 
 	const getMatchData: Match = useSelector(
@@ -36,29 +34,18 @@ const Header = () => {
 
 	const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
 
-	const currentInningScore = getBattingData[getCurrentInning]?.score;
-	const totalWickets = getBattingData[getCurrentInning]?.wickets;
-	// const getCurrentInningScore = () => {
-	// 	if (getCurrentInning === "inning1") {
-	// 		return getBattingData?.inning1?.score;
-	// 		//return battingAllData[inningKey]?.find((value) => value.score)
-	// 	}
-	// };
+	const currentInningScore = getCurrentInningData?.totalRuns;
+	const totalWickets = getCurrentInningData?.wickets;
+
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const onEndMatch = () => {
 		setEndMatchOpenConfirmModal(true)
-		//navigate("/");
 	};
 	const resetStates = () => {
 		persistor.purge();
-		// persistor.pause();
-		// persistor.flush().then(() => {
-		//     return persistor.purge();
-		// });
-		//dispatch(reset());
 		navigate("/");
 	};
 
@@ -98,6 +85,10 @@ const Header = () => {
 		setEndMatchOpenConfirmModal(false);
 	}
 
+	const getValidBalls = () => {
+		return getCurrentInningData?.balls.filter((val: any) => val.isLegal).length;
+	}
+
 	const EndMatch = (data) => {
 
 		//setEndMatchOpenConfirmModal(false)
@@ -135,27 +126,22 @@ const Header = () => {
 						<span>
 							<PiDotFill />
 						</span>{" "}
-						{calculateOvers(getBattingData[getCurrentInning]?.overs)} overs{" "}
+						{calculateOvers(getValidBalls())} overs{" "}
 						<span>
 							<PiDotFill />
 						</span>{" "}
-						RR: {calculateRunRate(getBattingData[getCurrentInning]?.overs)}
+						RR: {calculateRunRate(getCurrentInningData?.balls.length)}
 					</div>
 				</div>
 
 				<div className="">
 					<Button color="red" text="Reset" handleClick={() => setResetOpenConfirmModal(true)} />
-					{/* <Button
-					color="purple"
-					text="Switch Innings"
-					handleClick={switchInning}
-					classes="ml-2"
-				/> */}
+
 					<Button
 						color="purple"
 						text={
 							getCurrentInning === "inning1" ? "Save Inning 1" : "Save Inning 2"
-						}
+						} slice
 						handleClick={() => setOpenConfirmModal(true)}
 						classes="ml-2"
 					/>

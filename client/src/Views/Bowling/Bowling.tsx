@@ -15,11 +15,13 @@ const Bowling = () => {
 
 	const dispatch = useDispatch();
 
-	const { getStatistics, getCurrentInning, getBowlingData, getCurrentBowlingTeam } = useFunctions();
+	const { getStatistics, getCurrentInning, getBowlingData, getCurrentBowlingTeam, getCurrentInningData } = useFunctions();
 
 	// const getCurrentInningBowlingData = () => {
 	// 	return getBowlingData[getCurrentInning]?.bowlingData;
 	// };
+
+
 
 	const onClickAddBowler = () => {
 		const bowlerInfo: BowlingData = {

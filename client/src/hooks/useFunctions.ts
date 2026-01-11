@@ -21,6 +21,11 @@ const useFunctions = () => {
     }
   );
 
+  //get current inning battingData
+  const getCurrentInningData = useSelector(
+    (state: any) => state.innings[getCurrentInning]
+  );
+
   //get bowler data
   const getBowlingData = useSelector(
     (state: any) => state.innings[getCurrentInning]?.bowlingData,
@@ -31,22 +36,19 @@ const useFunctions = () => {
 
   //get batter id whose on strike
   const getBatsmanOnStrike = () => {
-    return getBattingData[getCurrentInning]?.battingData?.find(
-      (value: any) => value.onStrike === true
-    )?.id;
+    return getBattingData?.find((value: any) => value.onStrike === true)?.id;
   };
 
   //get bowler id whose on strike
   const getBowlerOnStrike = () => {
-    return getBowlingData[getCurrentInning]?.bowlingData?.find(
-      (value: any) => value.currentBowler === true
-    )?.id;
+    return getBowlingData.find((value: any) => value.currentBowler === true)
+      ?.id;
   };
 
   //get currentInning batting data
-  const getCurrentInningBattingData = () => {
-    return getBattingData[getCurrentInning]?.battingData;
-  };
+  // const getCurrentInningBattingData = () => {
+  //   return getBattingData[getCurrentInning]?.battingData;
+  // };
 
   //get currentMatchId
 
@@ -71,7 +73,7 @@ const useFunctions = () => {
     getBowlingData,
     getBatsmanOnStrike,
     getBowlerOnStrike,
-    getCurrentInningBattingData,
+    getCurrentInningData,
     isNoBattingdata,
     isNoBowligdata,
     getCurrntMatchId,

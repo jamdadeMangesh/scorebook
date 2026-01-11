@@ -218,17 +218,21 @@ export const matchSlice = createSlice({
       );
     },
 
-    switchStrike: (state, action: PayloadAction<{ inning: InningKey }>) => {
+    switchStrike: (
+      state,
+      action: PayloadAction<{ inning: InningKey; batsmanId: string }>
+    ) => {
       console.log("action.payload.inning", action.payload.inning);
-      const batters = state?.innings[action.payload.inning]?.battingData;
+      const batters = state.innings[action.payload.inning].battingData;
 
-      const activeBatters = batters.filter((b) => b.out === "-");
+      batters.forEach((b) => (b.onStrike = b.id === action.payload.batsmanId));
 
-      if (activeBatters.length !== 2) return;
-      activeBatters[0].onStrike = !activeBatters[0].onStrike;
-      activeBatters[1].onStrike = !activeBatters[1].onStrike;
+      // const activeBatters = batters.filter((b) => b.out === "-");
 
-      //batters.forEach((b) => (b.onStrike = !b.onStrike));
+      // if (activeBatters.length !== 2) return;
+
+      // activeBatters[0].onStrike = !activeBatters[0].onStrike;
+      // activeBatters[1].onStrike = !activeBatters[1].onStrike;
     },
 
     switchBowler: (
@@ -248,54 +252,102 @@ export const matchSlice = createSlice({
       const inning = state.innings[action.payload.inning];
       const { ball } = action.payload;
 
+      console.log("ball:", ball);
       inning.balls.push(ball);
-      inning.totalRuns += ball.runs;
 
       const striker: any = inning.battingData.find((b) => b.onStrike);
       const bowler = inning.bowlingData.find((b) => b.currentBowler);
 
+      // ✅ Handle run-out completed runs
+      if (ball.wicket?.type === "RunOut" && ball.wicket.completedRuns) {
+        inning.totalRuns += ball.wicket.completedRuns;
+      } else {
+        // 1️⃣ TEAM RUNS (always increase)
+        inning.totalRuns += ball.batRuns;
+      }
+
+      // 2️⃣ LEGAL BALL HANDLING
       if (ball.isLegal) {
         striker && (striker.balls += 1);
         bowler && (bowler.balls += 1);
       }
 
-      if (striker) {
-        striker.runs += ball.runs;
+      const isExtra = Boolean(ball.extras);
+      const extraType = ball.extras?.type;
+
+      const isByeOrLegBye = extraType === "byes" || extraType === "legByes";
+
+      // 3️⃣ BATSMAN RUNS (ONLY if NOT extras)
+      if (striker && !isExtra) {
+        striker.runs += ball.batRuns;
         striker.strikeRate = calculateStrikerate(striker.runs, striker.balls);
-        if (ball.runs === 4) striker.fours += 1;
-        if (ball.runs === 6) striker.sixes += 1;
-        if (ball.runs === 8) striker.eights += 1;
+
+        if (ball.batRuns === 4) striker.fours += 1;
+        if (ball.batRuns === 6) striker.sixes += 1;
+        if (ball.batRuns === 8) striker.eights += 1;
       }
 
+      // 4️⃣ BOWLER RUNS
       if (bowler) {
-        bowler.runs += ball.runs;
-        if (ball.extras) bowler.extras += ball.extras.runs;
+        // Bowler conceded runs except byes/leg-byes
+        if (!isByeOrLegBye) {
+          bowler.runs += ball.batRuns;
+        }
+
+        if (ball.extras) {
+          inning.totalRuns += ball.extras.runs;
+          if (!isByeOrLegBye && bowler) {
+            bowler.extras += ball.extras.runs;
+          }
+        }
+        if (ball.wicket?.type === "RunOut" && ball.wicket.completedRuns) {
+          bowler.runs += ball.wicket.completedRuns;
+        }
       }
 
+      // 5️⃣ WICKET HANDLING
       if (ball.wicket) {
         inning.wickets += 1;
-        if (striker) {
+
+        if (striker && bowler) {
           striker.out = ball.wicket.type;
+          //striker.bowler = bowler.bowlerName;
+          // if(ball.wicket.type === "RunOut") {
+          //   striker.bowler = "-"
+          // } else {
+          //   striker.bowler =  bowler.bowlerName;
+          // }
+
+          striker.bowler =
+            ball.wicket.type === "RunOut" ? "-" : bowler.bowlerName;
           striker.onStrike = false;
-          striker.bowler = bowler?.bowlerName;
         }
-        bowler && (bowler.wickets += 1);
+
+        // Bowler wicket only for valid types
+        if (bowler && ball.wicket.type !== "RunOut") {
+          bowler.wickets += 1;
+        }
       }
 
-      if (ball.isLegal && ball.runs % 2 === 1) {
-        //inning.battingData.forEach((b) => (b.onStrike = !b.onStrike));
+      // 6️⃣ STRIKE CHANGE ON ODD RUNS (LEGAL ONLY)
+      if (ball.isLegal && ball.batRuns % 2 === 1) {
         const activeBatters = inning.battingData.filter((b) => b.out === "-");
-
         if (activeBatters.length === 2) {
           activeBatters.forEach((b) => (b.onStrike = !b.onStrike));
         }
       }
 
+      // 7️⃣ END OF OVER LOGIC
       if (
         ball.isLegal &&
         inning.balls.filter((b) => b.isLegal).length % 6 === 0
       ) {
-        inning.battingData.forEach((b) => (b.onStrike = !b.onStrike));
+        const activeBatters = inning.battingData.filter((b) => b.out === "-");
+        if (activeBatters.length === 2) {
+          activeBatters.forEach((b) => (b.onStrike = !b.onStrike));
+        }
+
+        // force UI to select next bowler
         inning.bowlingData.forEach((b) => (b.currentBowler = false));
       }
     },

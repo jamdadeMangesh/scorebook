@@ -1,5 +1,16 @@
 {
   "teamName": "Tandav",
-  "players": [],
-  "createdAt": "2026-01-01T11:41:54.502Z"
+  "players": [
+    {
+      "id": "56fb2c02-746f-4b42-9e7b-1723fe7e24cf",
+      "name": "Saurabh Gunjal",
+      "addedAt": "2026-01-10T14:28:20.083Z"
+    },
+    {
+      "id": "9c448365-c6fb-4f65-8394-bf77bae929b7",
+      "name": "Shubham Randale",
+      "addedAt": "2026-01-10T14:28:40.721Z"
+    }
+  ],
+  "createdAt": "2026-01-10T14:27:36.427Z"
 }

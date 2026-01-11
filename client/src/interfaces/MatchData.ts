@@ -2,16 +2,10 @@ export type InningKey = "inning1" | "inning2";
 
 export type ExtraType = "wide" | "noBall" | "byes" | "legByes";
 
-export type WicketType =
-  | "bowled"
-  | "caught"
-  | "runOut"
-  | "stumped"
-  | "lbw"
-  | "retired";
+export type WicketType = "Bowled" | "Caught" | "RunOut" | "Stumped" | "Retired";
 
 export interface Ball {
-  runs: number;
+  batRuns: number;
   isLegal: boolean;
   extras?: {
     type: ExtraType;
@@ -21,6 +15,7 @@ export interface Ball {
     type: WicketType;
     batsmanId: string;
     bowlerId: string;
+    completedRuns?: number;
   };
 }
 
@@ -213,25 +208,34 @@ export const filteredTimeline = (type: string, runs: number) => {
   }
 };
 
-export const getBackgroundClass = (value: any) => {
-  if (
-    value === 0 ||
-    value === 1 ||
-    value === 2 ||
-    value === 3 ||
-    value === 5 ||
-    value === 7 ||
-    value === 9
-  ) {
-    return "bg-gray-500";
-  } else if (value === 4 || value === 6 || value === 8) {
+export const getBackgroundClass = (
+  value: any,
+  isLegal: boolean,
+  extraType: string
+) => {
+  // if (
+  //   value === 0 ||
+  //   value === 1 ||
+  //   value === 2 ||
+  //   value === 3 ||
+  //   value === 5 ||
+  //   value === 7 ||
+  //   value === 9
+  // ) {
+  //   return "bg-gray-500";
+  // } else
+  if (value === 4 || value === 6 || value === 8) {
     return "bg-green-500";
   } else if (
     typeof value === "string" &&
     (value.includes("WD") || value.includes("NB") || value.includes("B"))
   ) {
     return "bg-purple-500";
+  } else if (!isLegal && (extraType === "wide" || "noball")) {
+    return "bg-purple-500";
   } else if (typeof value === "string" && value.includes("W")) {
     return "bg-red-500";
+  } else {
+    return "bg-gray-500";
   }
 };

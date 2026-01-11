@@ -5,7 +5,7 @@ import { PiDotFill } from "react-icons/pi";
 import { BattingData } from "../../interfaces/MatchData";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { addBatsman, switch_strike, switchStrike } from "../../store/Slice/MatchSlice";
+import { addBatsman, switchStrike } from "../../store/Slice/MatchSlice";
 import useFunctions from "../../hooks/useFunctions";
 import { getSingleTeamPlayers, Team } from "../../api/teamApi";
 
@@ -69,7 +69,7 @@ const Batting = () => {
         //     switch_strike({ currentInning: getCurrentInning, batterId: batterId })
         // );
         console.log('getCurrentInning getCurrentInning:', getCurrentInning);
-        dispatch(switchStrike({ inning: getCurrentInning }));
+        dispatch(switchStrike({ inning: getCurrentInning, batsmanId: batterId }));
     };
 
     return (
