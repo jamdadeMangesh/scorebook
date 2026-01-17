@@ -1,0 +1,130 @@
+{
+  "id": "tqMsRuOj3fjUq79gBZOTF",
+  "inningNumber": "inning2",
+  "statistics": {
+    "team1": "Morya Titans",
+    "team2": "Swardhundh Royals",
+    "tossWonBy": "Morya Titans",
+    "electedTo": "Batting",
+    "remarks": "",
+    "teamBatting": "Morya Titans",
+    "teamBowling": "Swardhundh Royals",
+    "teamBattingSecond": "Swardhundh Royals",
+    "teamBowlingSecond": "Morya Titans",
+    "isFirstInningCompleteed": true
+  },
+  "isMatchStarted": true,
+  "isMatchCompleted": true,
+  "innings": {
+    "inning1": {
+      "battingData": [
+        {
+          "id": "HWeO46MOKCYnhVUZBMtb0",
+          "batsmanName": "Dinesh Khandagale",
+          "runs": 7,
+          "balls": 4,
+          "fours": 1,
+          "sixes": 0,
+          "eights": 0,
+          "strikeRate": "175.00",
+          "out": "Bowled",
+          "bowler": "Pratik Jadhav",
+          "onStrike": false
+        }
+      ],
+      "bowlingData": [
+        {
+          "id": "TG0JlEWUfD396oon2aLnd",
+          "bowlerName": "Pratik Jadhav",
+          "balls": 4,
+          "runs": 7,
+          "wickets": 1,
+          "extras": 0,
+          "currentBowler": true
+        }
+      ],
+      "balls": [
+        {
+          "batRuns": 3,
+          "isLegal": true
+        },
+        {
+          "batRuns": 4,
+          "isLegal": true
+        },
+        {
+          "batRuns": 0,
+          "isLegal": true
+        },
+        {
+          "batRuns": 0,
+          "isLegal": true,
+          "wicket": {
+            "type": "Bowled",
+            "batsmanId": "HWeO46MOKCYnhVUZBMtb0",
+            "bowlerId": "TG0JlEWUfD396oon2aLnd",
+            "completedRuns": 0
+          }
+        }
+      ],
+      "totalRuns": 7,
+      "wickets": 1,
+      "completed": true
+    },
+    "inning2": {
+      "battingData": [
+        {
+          "id": "ABLyqyixPKdu64kcN3BfP",
+          "batsmanName": "Pratik Jadhav",
+          "runs": 2,
+          "balls": 2,
+          "fours": 0,
+          "sixes": 0,
+          "eights": 0,
+          "strikeRate": "100.00",
+          "out": "Caught",
+          "bowler": "Dinesh Khandagale",
+          "onStrike": false
+        }
+      ],
+      "bowlingData": [
+        {
+          "id": "OUKz-Vxow54EnRXpj3mkU",
+          "bowlerName": "Dinesh Khandagale",
+          "balls": 2,
+          "runs": 2,
+          "wickets": 1,
+          "extras": 0,
+          "currentBowler": true
+        }
+      ],
+      "balls": [
+        {
+          "batRuns": 2,
+          "isLegal": true
+        },
+        {
+          "batRuns": 0,
+          "isLegal": true,
+          "wicket": {
+            "type": "Caught",
+            "batsmanId": "ABLyqyixPKdu64kcN3BfP",
+            "bowlerId": "OUKz-Vxow54EnRXpj3mkU",
+            "completedRuns": 0
+          }
+        }
+      ],
+      "totalRuns": 2,
+      "wickets": 1,
+      "completed": true
+    }
+  },
+  "_persist": {
+    "version": -1,
+    "rehydrated": true
+  },
+  "result": {
+    "wonBy": "Morya Titans",
+    "description": "Won by 6 runs"
+  }
+}

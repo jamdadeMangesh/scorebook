@@ -3,11 +3,10 @@ import Button from "../../Components/Button/Button";
 import { IoIosClose } from "react-icons/io";
 import useFunctions from "../../hooks/useFunctions";
 import { useDispatch } from "react-redux";
-import { add_extras, recordBall } from "../../store/Slice/MatchSlice";
-//import { IExtrasTRuns } from "../../interfaces/MatchData";
+import { recordBall } from "../../store/Slice/MatchSlice";
 
 const Extras = () => {
-	const { getCurrentInning, isNoBattingdata, getBatsmanOnStrike, getBowlerOnStrike, isNoBowligdata } = useFunctions();
+	const { getCurrentInning, isNoBattingdata, isNoBowligdata } = useFunctions();
 	const dispatch = useDispatch()
 	const [extras, setExtras] = useState('');
 	const [extrasRuns, setExtrasRuns] = useState<any>({
@@ -74,9 +73,6 @@ const Extras = () => {
 			selected: "",
 		})
 	}
-
-	console.log('extras:', extras)
-	console.log('extrasRuns:', extrasRuns)
 
 	const addExtras = () => {
 		//dispatch(add_extras({ currentInning: getCurrentInning, extrasRuns: extrasRuns, batsmanId: getBatsmanOnStrike(), bowlerId: getBowlerOnStrike() }))

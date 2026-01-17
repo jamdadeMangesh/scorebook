@@ -47,13 +47,12 @@ const Bowling = () => {
 	useEffect(() => {
 		const getBowlingTeamPlayers = async () => {
 			if (getCurrentBowlingTeam) {
-				const res = await getSingleTeamPlayers(getCurrentBowlingTeam);
-				console.log(res)
+				const res = await getSingleTeamPlayers(getCurrentBowlingTeam());
 				setBowlingTeamPlayers(res.players || [])
 			}
 		}
 		getBowlingTeamPlayers()
-	}, [getCurrentBowlingTeam]);
+	}, []);
 
 
 	const changeBowler = (bowlerId: string) => {

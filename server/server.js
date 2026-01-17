@@ -310,9 +310,128 @@ app.post("/api/save-match", (req,res) => {
             message: 'Failed to save match data'
         })
     }
-    
+});
 
+//get all matches to show in table
+app.get("/api/matches",  async(req,res) => {
+    try {
+        const files = await fs.promises.readdir(MATCH_DIR);
+
+        const matches = await Promise.all(
+            files.filter((file) => file.endsWith('.json'))
+            .map(async (file) => {
+                const filePath = path.join(MATCH_DIR, file);
+                const data = JSON.parse(await fs.promises.readFile(filePath, "utf8"));
+
+                return {
+                    fileName: file,
+                    matchId: data.id,
+                    team1: data.statistics.team1,
+                    team2: data.statistics.team2,
+                    inning1Score: `${data.innings.inning1.totalRuns} / ${data.innings.inning1.wickets}`,
+                    inning2Score: data.innings.inning2.completed ? `${data.innings.inning2.totalRuns} / ${data.innings.inning2.wickets}` : "-",
+                    status: data.innings.inning2.completed ? "Completed" : "In Progress",
+                    result: data.result?.description || '-',
+                    //updatedAt: data.updatedAt || null
+                }
+
+            })
+        );
+        res.json({
+            status: 200,
+            message: "All matches fetched successfully",
+            matches
+        })
+    } catch (error) {
+        res.json({
+            status: 500,
+            message: 'Failed to fetch match data'
+        })
+    }
 })
+
+//points table
+app.get("/api/points-table", async (req, res) => {
+  try {
+    const files = await fs.promises.readdir(MATCH_DIR);
+    const table = {};
+
+    for (const file of files) {
+      if (!file.endsWith(".json")) continue;
+
+      const data = JSON.parse(
+        await fs.promises.readFile(path.join(MATCH_DIR, file), "utf8")
+      );
+
+      if (!data.result) continue; // skip incomplete matches
+
+      const teams = [
+        data.statistics.team1,
+        data.statistics.team2,
+      ];
+
+      teams.forEach((team) => {
+        if (!table[team]) {
+          table[team] = {
+            team,
+            played: 0,
+            wins: 0,
+            losses: 0,
+            points: 0,
+            runsFor: 0,
+            oversFaced: 0,
+            runsAgainst: 0,
+            oversBowled: 0,
+            netRunRate: 0,
+          };
+        }
+      });
+
+      const t1 = data.statistics.team1;
+      const t2 = data.statistics.team2;
+
+      const i1 = data.innings.inning1;
+      const i2 = data.innings.inning2;
+
+      table[t1].played += 1;
+      table[t2].played += 1;
+
+      table[t1].runsFor += i1.totalRuns;
+      table[t1].oversFaced += i1.balls.filter(b => b.isLegal).length / 6;
+      table[t1].runsAgainst += i2.totalRuns;
+      table[t1].oversBowled += i2.balls.filter(b => b.isLegal).length / 6;
+
+      table[t2].runsFor += i2.totalRuns;
+      table[t2].oversFaced += i2.balls.filter(b => b.isLegal).length / 6;
+      table[t2].runsAgainst += i1.totalRuns;
+      table[t2].oversBowled += i1.balls.filter(b => b.isLegal).length / 6;
+
+      const winner = data.result.wonBy;
+
+      table[winner].wins += 1;
+      table[winner].points += 2;
+
+      const loser = winner === t1 ? t2 : t1;
+      table[loser].losses += 1;
+    }
+
+    Object.values(table).forEach((team) => {
+      team.netRunRate =
+        team.oversFaced && team.oversBowled
+          ? (
+              team.runsFor / team.oversFaced -
+              team.runsAgainst / team.oversBowled
+            ).toFixed(2)
+          : "0.00";
+    });
+
+    res.status(200).json(Object.values(table));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to calculate points table" });
+  }
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`)
 })

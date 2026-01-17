@@ -2,12 +2,15 @@ import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import InfoModal from "../InfoModal/InfoModal";
+import useFunctions from "../../hooks/useFunctions";
 //import image2 from "../../assets/cricket-bg.jpg";
 
 var image1 = require("../../assets/cricket-bg.jpg");
 
 export const Home = () => {
     const [openModal, setOpenModal] = useState(false);
+
+    const { isMatchStarted } = useFunctions();
     const navigate = useNavigate();
 
     return (
@@ -37,8 +40,9 @@ export const Home = () => {
                                     New Match
                                 </div>
                                 <div
-                                    className="flex items-center justify-center p-3 text-sm font-bold text-white rounded-lg bg-blue-500 hover:bg-blue-600 group hover:shadow cursor-pointer"
+                                    className={`flex items-center justify-center p-3 text-sm font-bold text-white rounded-lg bg-blue-500 hover:bg-blue-600 group hover:shadow cursor-pointer ${!isMatchStarted && 'pointer-events-none'}`}
                                     onClick={() => navigate("/dashboard")}
+                                    aria-disabled={!isMatchStarted && "true"}
                                 >
                                     Current Match
                                 </div>
@@ -51,7 +55,10 @@ export const Home = () => {
                                 <div className="flex items-center justify-center p-3 text-sm font-bold text-white rounded-lg bg-blue-500 hover:bg-blue-600 group hover:shadow ">
                                     Add Players
                                 </div>
-                                <div className="flex items-center justify-center p-3 text-sm font-bold text-white rounded-lg bg-blue-500 hover:bg-blue-600 group hover:shadow ">
+                                <div
+                                    className="flex items-center justify-center p-3 text-sm font-bold text-white rounded-lg bg-blue-500 hover:bg-blue-600 group hover:shadow cursor-pointer"
+                                    onClick={() => navigate("/matches")}
+                                >
                                     Previous Matches
                                 </div>
                                 <div className="flex items-center justify-center p-3 text-sm font-bold text-white rounded-lg bg-blue-500 hover:bg-blue-600 group hover:shadow ">

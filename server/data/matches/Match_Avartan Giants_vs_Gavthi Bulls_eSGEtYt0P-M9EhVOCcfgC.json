@@ -1,0 +1,138 @@
+{
+  "id": "eSGEtYt0P-M9EhVOCcfgC",
+  "inningNumber": "inning2",
+  "statistics": {
+    "team1": "Avartan Giants",
+    "team2": "Gavthi Bulls",
+    "tossWonBy": "Avartan Giants",
+    "electedTo": "Batting",
+    "remarks": "",
+    "teamBatting": "Avartan Giants",
+    "teamBowling": "Gavthi Bulls",
+    "teamBattingSecond": "Gavthi Bulls",
+    "teamBowlingSecond": "Avartan Giants",
+    "isFirstInningCompleteed": true
+  },
+  "isMatchStarted": true,
+  "isMatchCompleted": false,
+  "innings": {
+    "inning1": {
+      "battingData": [
+        {
+          "id": "OcBuCKkKX9e1jSTHZJmby",
+          "batsmanName": "Mangesh Jamdade",
+          "runs": 15,
+          "balls": 6,
+          "fours": 1,
+          "sixes": 0,
+          "eights": 0,
+          "strikeRate": "250.00",
+          "out": "-",
+          "bowler": "-",
+          "onStrike": true
+        }
+      ],
+      "bowlingData": [
+        {
+          "id": "XgWepcUjhEdcCzXFh1Hvz",
+          "bowlerName": "Saurabh Gunjal",
+          "balls": 6,
+          "runs": 15,
+          "wickets": 0,
+          "extras": 0,
+          "currentBowler": false
+        }
+      ],
+      "balls": [
+        {
+          "batRuns": 2,
+          "isLegal": true
+        },
+        {
+          "batRuns": 4,
+          "isLegal": true
+        },
+        {
+          "batRuns": 3,
+          "isLegal": true
+        },
+        {
+          "batRuns": 5,
+          "isLegal": true
+        },
+        {
+          "batRuns": 0,
+          "isLegal": true
+        },
+        {
+          "batRuns": 1,
+          "isLegal": true
+        }
+      ],
+      "totalRuns": 15,
+      "wickets": 0,
+      "completed": true
+    },
+    "inning2": {
+      "battingData": [
+        {
+          "id": "_mAGbV63zrZkkbVo9BNGc",
+          "batsmanName": "Saurabh Gunjal",
+          "runs": 8,
+          "balls": 6,
+          "fours": 1,
+          "sixes": 0,
+          "eights": 0,
+          "strikeRate": "133.33",
+          "out": "-",
+          "bowler": "-",
+          "onStrike": true
+        }
+      ],
+      "bowlingData": [
+        {
+          "id": "BsJWu9PcEKf_IigX-V_Xv",
+          "bowlerName": "Mangesh Jamdade",
+          "balls": 6,
+          "runs": 8,
+          "wickets": 0,
+          "extras": 0,
+          "currentBowler": false
+        }
+      ],
+      "balls": [
+        {
+          "batRuns": 2,
+          "isLegal": true
+        },
+        {
+          "batRuns": 4,
+          "isLegal": true
+        },
+        {
+          "batRuns": 0,
+          "isLegal": true
+        },
+        {
+          "batRuns": 0,
+          "isLegal": true
+        },
+        {
+          "batRuns": 0,
+          "isLegal": true
+        },
+        {
+          "batRuns": 2,
+          "isLegal": true
+        }
+      ],
+      "totalRuns": 8,
+      "wickets": 0,
+      "completed": false
+    }
+  },
+  "_persist": {
+    "version": -1,
+    "rehydrated": true
+  }
+}

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const useFunctions = () => {
   //get all data
-  const getAllData = useSelector((state) => state);
+  const getAllData = useSelector((state: any) => state);
 
   //get all statistics
   const getStatistics: Statistics = useSelector(
@@ -48,10 +48,11 @@ const useFunctions = () => {
       ?.id;
   };
 
-  //get currentInning batting data
-  // const getCurrentInningBattingData = () => {
-  //   return getBattingData[getCurrentInning]?.battingData;
-  // };
+  //is match started
+  const isMatchStarted = useSelector((state: any) => state.isMatchStarted);
+
+  //is match completed
+  const isMatchComplted = useSelector((state: any) => state.isMatchComplted);
 
   //get currentMatchId
 
@@ -64,10 +65,18 @@ const useFunctions = () => {
     getBowlingData[getCurrentInning]?.bowlingData?.length === 0;
 
   //get current batting team
-  const getCurrentBattingTeam = getStatistics.teamBatting;
+  const getCurrentBattingTeam = () => {
+    return getCurrentInning === "inning1"
+      ? getStatistics.teamBatting
+      : getStatistics.teamBattingSecond;
+  };
 
   //get current batting team
-  const getCurrentBowlingTeam = getStatistics.teamBowling;
+  const getCurrentBowlingTeam = () => {
+    return getCurrentInning === "inning1"
+      ? getStatistics.teamBowling
+      : getStatistics.teamBowlingSecond;
+  };
 
   return {
     getAllData,
@@ -83,6 +92,8 @@ const useFunctions = () => {
     getCurrntMatchId,
     getCurrentBattingTeam,
     getCurrentBowlingTeam,
+    isMatchStarted,
+    isMatchComplted,
   };
 };
 

@@ -1,114 +1,12 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   Match,
-  //Inning,
   BattingData,
-  //Extras,
   BowlingData,
-  //scoreMapping,
   calculateStrikerate,
-  //IExtrasTRuns,
-  //filteredTimeline,
-  //Statistics,
   InningKey,
   Ball,
 } from "../../interfaces/MatchData";
-import useFunctions from "../../hooks/useFunctions";
-
-// const initialState: Match = {
-//   id: "",
-//   statistics: {
-//     team1: "",
-//     team2: "",
-//     tossWonBy: "",
-//     playersCount: 0,
-//     remarks: "",
-//     teamBatting: "",
-//     teamBowling: "",
-//     teamBattingSecond: "",
-//     teamBowlingSecond: "",
-//     isFirstInningCompleteed: false,
-//   },
-//   inningNumber: "",
-//   result: {
-//     wonBy: "",
-//     resultDescription: "",
-//   },
-//   batting: {
-//     inning1: {
-//       battingData: [],
-//       score: 0,
-//       overs: 0,
-//       wickets: 0,
-//       extras: {
-//         wides: 0,
-//         noBalls: 0,
-//         byes: 0,
-//         legByes: 0,
-//       },
-//       timeline: {
-//         scoreTimeline: [],
-//       },
-//     },
-//     inning2: {
-//       battingData: [],
-//       score: 0,
-//       overs: 0,
-//       wickets: 0,
-//       extras: {
-//         wides: 0,
-//         noBalls: 0,
-//         byes: 0,
-//         legByes: 0,
-//       },
-//       timeline: {
-//         scoreTimeline: [],
-//       },
-//     },
-//     // inning: "",
-//     // battingData:
-//     // [
-//     //     {
-//     //         id: "",
-//     //         batsmanName: "",
-//     //         runs: 0,
-//     //         balls: 0,
-//     //         fours: 0,
-//     //         sixes: 0,
-//     //         eights: 0,
-//     //         strikeRate: 0,
-//     //         out: "",
-//     //         bowler: "",
-//     //     }
-//     // ],
-//     // extras: {
-//     //     wides: 0,
-//     //     noBalls: 0,
-//     //     byes: 0,
-//     //     legByes: 0,
-//     // }
-//   },
-//   bowling: {
-//     inning1: {
-//       bowlingData: [],
-//       extras: {
-//         wides: 0,
-//         noBalls: 0,
-//         byes: 0,
-//         legByes: 0,
-//       },
-//     },
-//     inning2: {
-//       bowlingData: [],
-//       extras: {
-//         wides: 0,
-//         noBalls: 0,
-//         byes: 0,
-//         legByes: 0,
-//       },
-//     },
-//   },
-// };
 
 const createEmptyInning = () => ({
   battingData: [],
@@ -136,6 +34,8 @@ const initialState: Match = {
   id: "",
   inningNumber: "inning1",
   statistics: initialStatistics,
+  isMatchStarted: false,
+  isMatchCompleted: false,
   innings: {
     inning1: createEmptyInning(),
     inning2: createEmptyInning(),
@@ -149,7 +49,12 @@ export const matchSlice = createSlice({
     add_statistics: (state: Match, action) => {
       state.statistics = action.payload;
     },
-
+    setMatchStarted: (state: Match, action) => {
+      state.isMatchStarted = action.payload;
+    },
+    setMatchCompleted: (state: Match, action) => {
+      state.isMatchCompleted = action.payload;
+    },
     setMatchTeams: (
       state,
       action: PayloadAction<{ team1: string; team2: string }>
@@ -222,17 +127,9 @@ export const matchSlice = createSlice({
       state,
       action: PayloadAction<{ inning: InningKey; batsmanId: string }>
     ) => {
-      console.log("action.payload.inning", action.payload.inning);
       const batters = state.innings[action.payload.inning].battingData;
 
       batters.forEach((b) => (b.onStrike = b.id === action.payload.batsmanId));
-
-      // const activeBatters = batters.filter((b) => b.out === "-");
-
-      // if (activeBatters.length !== 2) return;
-
-      // activeBatters[0].onStrike = !activeBatters[0].onStrike;
-      // activeBatters[1].onStrike = !activeBatters[1].onStrike;
     },
 
     switchBowler: (
@@ -252,7 +149,6 @@ export const matchSlice = createSlice({
       const inning = state.innings[action.payload.inning];
       const { ball } = action.payload;
 
-      console.log("ball:", ball);
       inning.balls.push(ball);
 
       const striker: any = inning.battingData.find((b) => b.onStrike);
@@ -369,274 +265,17 @@ export const matchSlice = createSlice({
       action: PayloadAction<{ wonBy: string; description: string }>
     ) => {
       state.result = action.payload;
+      state.innings.inning2.completed = true;
     },
 
     resetMatch: () => initialState,
-    // add_batsman: (
-    //   state: Match,
-    //   action: PayloadAction<{
-    //     currentInning: string;
-    //     batsmanData: BattingData;
-    //     extras?: Extras;
-    //   }>
-    // ) => {
-    //   const { currentInning, batsmanData, extras } = action.payload;
-    //   const inningKey = currentInning === "inning1" ? "inning1" : "inning2";
-    //   const batterInfo = state!.batting![inningKey].battingData;
-
-    //   if (batterInfo) {
-    //     batterInfo?.push(batsmanData);
-    //   }
-    // },
-    // add_bowler: (
-    //   state: Match,
-    //   action: PayloadAction<{ currentInning: string; bowlerData: BowlingData }>
-    // ) => {
-    //   const { currentInning, bowlerData } = action.payload;
-    //   const inningKey = currentInning === "inning1" ? "inning1" : "inning2";
-    //   const bowlerInfo = state!.bowling![inningKey].bowlingData;
-    //   if (bowlerInfo) {
-    //     bowlerInfo?.push(bowlerData);
-    //   }
-    // },
-    // switch_strike: (
-    //   state: Match,
-    //   action: PayloadAction<{ currentInning: string; batterId: string }>
-    // ) => {
-    //   const { currentInning, batterId } = action.payload;
-    //   const inningKey = currentInning === "inning1" ? "inning1" : "inning2";
-    //   const battingInfo = state!.batting![inningKey].battingData;
-    //   const changeStrikeForOnStrikeBatter = battingInfo?.find(
-    //     (value) => value.onStrike === true
-    //   );
-    //   if (changeStrikeForOnStrikeBatter) {
-    //     changeStrikeForOnStrikeBatter.onStrike = false;
-    //   }
-    //   const changeStrikeData = battingInfo?.find(
-    //     (value) => value.onStrike === false && value.id === batterId
-    //   );
-
-    //   if (changeStrikeData) {
-    //     changeStrikeData.onStrike = true;
-    //   }
-    // },
-    // switch_bowler: (
-    //   state: Match,
-    //   action: PayloadAction<{ currentInning: string; bowlerId: string }>
-    // ) => {
-    //   const { currentInning, bowlerId } = action.payload;
-    //   const inningKey = currentInning === "inning1" ? "inning1" : "inning2";
-    //   const bowlingInfo = state!.bowling![inningKey].bowlingData;
-    //   const changeStrikeForOnStrikeBatter = bowlingInfo?.find(
-    //     (value) => value.currentBowler === true
-    //   );
-    //   if (changeStrikeForOnStrikeBatter) {
-    //     changeStrikeForOnStrikeBatter.currentBowler = false;
-    //   }
-    //   const changeStrikeData = bowlingInfo?.find(
-    //     (value) => value.currentBowler === false && value.id === bowlerId
-    //   );
-
-    //   if (changeStrikeData) {
-    //     changeStrikeData.currentBowler = true;
-    //   }
-    // },
-    // add_score: (
-    //   state: Match,
-    //   action: PayloadAction<{
-    //     currentInning?: string;
-    //     score?: any;
-    //     onStrikeBatsmanId?: string;
-    //     onStrikeBowlerId?: string;
-    //   }>
-    // ) => {
-    //   const { currentInning, score, onStrikeBatsmanId, onStrikeBowlerId } =
-    //     action.payload;
-
-    //   const inningKey = currentInning === "inning1" ? "inning1" : "inning2";
-    //   const addingScore = state!.batting![inningKey];
-
-    //   //adding score to total runs
-    //   if (addingScore) {
-    //     addingScore.score += score;
-
-    //     //add 1 ball to overs
-    //     addingScore.overs += 1;
-
-    //     //add runs to score timeline
-    //     addingScore?.timeline.scoreTimeline?.push(score);
-    //   }
-
-    //   //adding score to batter
-    //   const addingScoreToBatter = state!.batting![inningKey].battingData;
-    //   const addScoreToStrikerBatsman: any = addingScoreToBatter?.find(
-    //     (value) => value.id === onStrikeBatsmanId
-    //   );
-
-    //   if (addScoreToStrikerBatsman) {
-    //     addScoreToStrikerBatsman.runs += score;
-
-    //     //adding balls to batter
-    //     addScoreToStrikerBatsman.balls += 1;
-    //     addScoreToStrikerBatsman.strikeRate = calculateStrikerate(
-    //       addScoreToStrikerBatsman.runs,
-    //       addScoreToStrikerBatsman.balls
-    //     );
-    //   }
-
-    //   //add 4,6,8 count to batsman
-    //   const scoreKey: any = scoreMapping[score];
-    //   if (scoreKey && addScoreToStrikerBatsman) {
-    //     addScoreToStrikerBatsman![scoreKey] += 1;
-    //   }
-
-    //   /*ADD SCORE TO BOWLER */
-
-    //   //adding score to batter
-    //   const addingScoreToBowler = state!.bowling![inningKey].bowlingData;
-    //   const addScoreToStrikerBowler: any = addingScoreToBowler?.find(
-    //     (value) => value.id === onStrikeBowlerId
-    //   );
-    //   if (addScoreToStrikerBowler) {
-    //     addScoreToStrikerBowler.runs += score;
-
-    //     //adding balls to batter
-    //     addScoreToStrikerBowler.overs += 1;
-    //   } },
-    // add_wicket: (
-    //   state: Match | any,
-    //   action: PayloadAction<{
-    //     currentInning: string;
-    //     wicketType: any;
-    //     bowlerId: string;
-    //     batsmanId: string;
-    //   }>
-    // ) => {
-    //   const { wicketType, currentInning, bowlerId, batsmanId } = action.payload;
-
-    //   //adding wicket to batter
-    //   const getCurrentInningBattingData =
-    //     state!.batting![currentInning]?.battingData;
-    //   const addWicketToStrikerBatsman = getCurrentInningBattingData?.find(
-    //     (value: Match) => value.id === batsmanId
-    //   );
-
-    //   //adding wicket to bowler
-    //   const getCurrentInningBowlinggData =
-    //     state!.bowling![currentInning]?.bowlingData;
-    //   const addWicketToStrikerBowler = getCurrentInningBowlinggData?.find(
-    //     (value: Match) => value.id === bowlerId
-    //   );
-
-    //   const addingWickets = state!.batting![currentInning];
-
-    //   //add wicket data to out batsman
-    //   if (addWicketToStrikerBatsman) {
-    //     addWicketToStrikerBatsman.out = wicketType;
-    //     addWicketToStrikerBatsman.onStrike = false;
-    //     addWicketToStrikerBatsman.bowler = addWicketToStrikerBowler?.bowlerName;
-    //     addWicketToStrikerBatsman.balls += 1;
-    //   }
-
-    //   //add wicket data to out bowler
-    //   if (addWicketToStrikerBowler) {
-    //     addWicketToStrikerBowler.wicket += 1;
-    //     addWicketToStrikerBowler.overs += 1;
-    //   }
-
-    //   //add wicket count in total score
-    //   if (addingWickets) {
-    //     addingWickets.overs += 1;
-    //     addingWickets.wickets += 1;
-    //     addingWickets?.timeline.scoreTimeline?.push("W");
-    //   }
-    // },
-    // add_extras: (
-    //   state: any,
-    //   action: PayloadAction<{
-    //     currentInning: string;
-    //     extrasRuns: IExtrasTRuns;
-    //     batsmanId: string;
-    //     bowlerId: string;
-    //   }>
-    // ) => {
-    //   const { currentInning, extrasRuns, batsmanId, bowlerId } = action.payload;
-
-    //   //get current inning batting data
-    //   const getCurrentInningBattingData =
-    //     state!.batting![currentInning]?.battingData;
-
-    //   const addExtrasToStrikerBatsman = getCurrentInningBattingData?.find(
-    //     (value: Match) => value.id === batsmanId
-    //   );
-
-    //   //get current inning bowling data
-    //   const getCurrentInningBowlinggData =
-    //     state!.bowling![currentInning]?.bowlingData;
-
-    //   const addExtrasToStrikerBowler = getCurrentInningBowlinggData?.find(
-    //     (value: Match) => value.id === bowlerId
-    //   );
-
-    //   //total score
-    //   const addingScore = state!.batting![currentInning];
-
-    //   switch (extrasRuns.Type) {
-    //     case "wide":
-    //     case "noBall":
-    //       //adding score to total runs
-    //       if (addingScore && addExtrasToStrikerBowler) {
-    //         addingScore!.score += extrasRuns.Runs;
-    //         addExtrasToStrikerBowler!.extras += extrasRuns.Runs;
-    //         //add runs to score timeline
-    //         addingScore?.timeline!.scoreTimeline?.push(
-    //           filteredTimeline(extrasRuns.Type, extrasRuns.Runs)
-    //         );
-    //       }
-    //       break;
-    //     case "byes":
-    //     case "legByes":
-    //       if (addingScore && addExtrasToStrikerBowler) {
-    //         addingScore!.overs += 1;
-    //         addingScore!.score += extrasRuns.Runs;
-    //         //addExtrasToStrikerBowler.extras += extrasRuns.Runs;
-    //         addExtrasToStrikerBatsman!.balls += 1;
-    //         addExtrasToStrikerBowler!.overs += 1;
-    //         addingScore?.timeline!.scoreTimeline?.push(
-    //           filteredTimeline(extrasRuns.Type, extrasRuns.Runs)
-    //         );
-    //       }
-    //   }
-    // },
-    // switch_inning: (
-    //   state: Match,
-    //   action: PayloadAction<{ matchId: string; currentInning: string }>
-    // ) => {
-    //   const { matchId, currentInning } = action.payload;
-    //   state.inningNumber = currentInning === "inning1" ? "inning2" : "inning1";
-    // },
-    // save_inning: (state: Match) => {
-    //   state.statistics.isFirstInningCompleteed = true;
-    // },
-    // save_match: (state: Match, action: PayloadAction<{ matchResult: any }>) => {
-    //   const { matchResult } = action.payload;
-    //   state.result.wonBy = matchResult?.matchWonBy;
-    //   state.result.resultDescription = matchResult?.resultDescription;
-    // },
-    // reset: (state: any) => {
-    //   //state.innings.remove();
-    //   state.statistics = [];
-    //   delete state.inning;
-    //   //return initialState
-    //   // state.initialState= [],
-    //   // state.statistics = [],
-    //   //state.innings = []
-    // },
   },
 });
 
 export const {
   add_statistics,
+  setMatchStarted,
+  setMatchCompleted,
   set_inning,
   setMatchTeams,
   setToss,
@@ -648,16 +287,6 @@ export const {
   switchStrike,
   completeInning,
   resetMatch,
-  //reset,
-  //add_batsman,
-  //add_bowler,
-  //switch_strike,
-  //add_score,
-  //switch_bowler,
-  //add_wicket,
-  //add_extras,
-  //switch_inning,
-  //save_inning,
-  //save_match,
+  endMatch,
 } = matchSlice.actions;
 export const matchReducer = matchSlice.reducer;

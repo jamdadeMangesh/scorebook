@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Button from "../../Components/Button/Button";
 import { FaCircleCheck } from "react-icons/fa6";
 import { PiDotFill } from "react-icons/pi";
 import { BattingData } from "../../interfaces/MatchData";
@@ -7,7 +6,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { addBatsman, switchStrike } from "../../store/Slice/MatchSlice";
 import useFunctions from "../../hooks/useFunctions";
-import { getSingleTeamPlayers, Team } from "../../api/teamApi";
+import { getSingleTeamPlayers } from "../../api/teamApi";
 
 const Batting = () => {
     const [batterName, setBatterName] = useState("");
@@ -15,33 +14,19 @@ const Batting = () => {
     const dispatch = useDispatch();
 
     const { getStatistics, getCurrentInning, getBattingData, getCurrentBattingTeam } = useFunctions();
-    // const battingAllData = useSelector((state: any) => state.batting, {
-    //     devModeChecks: { stabilityCheck: "never" },
-    // });
 
-    //const currentInningId = allState.find((values) => values.firstInning ? values.id : null);
-    //const currentInningId = Object.fromEntries(allState).filter((value: any) => value.entries ? value.id : null);
-
-    console.log('getCurrentInning:', getCurrentInning);
 
     useEffect(() => {
         const getBattingTeamPlayers = async () => {
             if (getCurrentBattingTeam) {
-                const res = await getSingleTeamPlayers(getCurrentBattingTeam);
-                console.log(res)
+                const res = await getSingleTeamPlayers(getCurrentBattingTeam());
                 setBattingTeamPlayers(res.players || [])
             }
         }
         getBattingTeamPlayers()
-    }, [getCurrentBattingTeam]);
-
-    console.log('battingTeamPlayers:', battingTeamPlayers);
-
-
+    }, []);
 
     const onClickAddBatsman = () => {
-
-
         const batterInfo: BattingData = {
             id: nanoid(),
             batsmanName: batterName,
@@ -64,11 +49,6 @@ const Batting = () => {
     };
 
     const changeStrike = (batterId: string) => {
-        //currentInning
-        // dispatch(
-        //     switch_strike({ currentInning: getCurrentInning, batterId: batterId })
-        // );
-        console.log('getCurrentInning getCurrentInning:', getCurrentInning);
         dispatch(switchStrike({ inning: getCurrentInning, batsmanId: batterId }));
     };
 
@@ -100,23 +80,11 @@ const Batting = () => {
                                 <option key={player.id} value={player.name}>{player.name}</option>
                             ))}
                         </select>
-                        {/* <input
-                            type="text"
-                            value={batterName}
-                            name="price"
-                            id="price"
-                            className=" bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-1.5 py-1 mr-4"
-                            placeholder="Player name"
-                            onChange={(e) => setBatterName(e.target.value)}
-                            required
-                        /> */}
                         <FaCircleCheck
                             className="absolute top-[5px] right-5 text-green-700 cursor-pointer"
                             onClick={onClickAddBatsman}
                         />
                     </div>
-                    {/* <button className="text-white inline-flex items-center  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-2 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Switch Batsman</button> */}
-                    {/* <Button color="purple" text="Switch Batsman" classes="ml-2" /> */}
                 </div>
             </div>
 

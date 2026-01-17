@@ -1,0 +1,130 @@
+{
+  "id": "7OpU1fw1k7_cjTNgIKNH4",
+  "inningNumber": "inning2",
+  "statistics": {
+    "team1": "Mahakal Yoddhas",
+    "team2": "Mandai Thallaivas",
+    "tossWonBy": "Mahakal Yoddhas",
+    "electedTo": "Batting",
+    "remarks": "",
+    "teamBatting": "Mahakal Yoddhas",
+    "teamBowling": "Mandai Thallaivas",
+    "teamBattingSecond": "Mandai Thallaivas",
+    "teamBowlingSecond": "Mahakal Yoddhas",
+    "isFirstInningCompleteed": true
+  },
+  "isMatchStarted": true,
+  "isMatchCompleted": true,
+  "innings": {
+    "inning1": {
+      "battingData": [
+        {
+          "id": "GfVie5P5k4KJJqqDCnlqc",
+          "batsmanName": "Ashutosh Kulkarni",
+          "runs": 16,
+          "balls": 6,
+          "fours": 1,
+          "sixes": 1,
+          "eights": 0,
+          "strikeRate": "266.67",
+          "out": "-",
+          "bowler": "-",
+          "onStrike": true
+        }
+      ],
+      "bowlingData": [
+        {
+          "id": "MN0YdjJDHTePTF4Ob0Y3n",
+          "bowlerName": "Shubham Randale",
+          "balls": 6,
+          "runs": 16,
+          "wickets": 0,
+          "extras": 0,
+          "currentBowler": false
+        }
+      ],
+      "balls": [
+        {
+          "batRuns": 3,
+          "isLegal": true
+        },
+        {
+          "batRuns": 2,
+          "isLegal": true
+        },
+        {
+          "batRuns": 1,
+          "isLegal": true
+        },
+        {
+          "batRuns": 4,
+          "isLegal": true
+        },
+        {
+          "batRuns": 6,
+          "isLegal": true
+        },
+        {
+          "batRuns": 0,
+          "isLegal": true
+        }
+      ],
+      "totalRuns": 16,
+      "wickets": 0,
+      "completed": true
+    },
+    "inning2": {
+      "battingData": [
+        {
+          "id": "OCLX0UwivVCNvX3-kl1Hp",
+          "batsmanName": "Shubham Randale",
+          "runs": 20,
+          "balls": 3,
+          "fours": 1,
+          "sixes": 0,
+          "eights": 2,
+          "strikeRate": "666.67",
+          "out": "-",
+          "bowler": "-",
+          "onStrike": true
+        }
+      ],
+      "bowlingData": [
+        {
+          "id": "pA6abJb5cvtqa_1TWfoOA",
+          "bowlerName": "Ashutosh Kulkarni",
+          "balls": 3,
+          "runs": 20,
+          "wickets": 0,
+          "extras": 0,
+          "currentBowler": true
+        }
+      ],
+      "balls": [
+        {
+          "batRuns": 4,
+          "isLegal": true
+        },
+        {
+          "batRuns": 8,
+          "isLegal": true
+        },
+        {
+          "batRuns": 8,
+          "isLegal": true
+        }
+      ],
+      "totalRuns": 20,
+      "wickets": 0,
+      "completed": true
+    }
+  },
+  "_persist": {
+    "version": -1,
+    "rehydrated": true
+  },
+  "result": {
+    "wonBy": "Mandai Thallaivas",
+    "description": "Won by 6 wickets"
+  }
+}

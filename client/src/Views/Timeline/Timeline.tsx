@@ -5,8 +5,6 @@ import { filteredTimeline, getBackgroundClass } from "../../interfaces/MatchData
 const Timeline = () => {
     const { getStatistics, getCurrentInning, getBattingData, getCurrentInningData } = useFunctions();
 
-    console.log('getCurrentInningData:', getCurrentInningData);
-
     return (
         <>
             <div className="flex justify-between items-center border-b pb-2 border-gray-300 border-spacing-2">

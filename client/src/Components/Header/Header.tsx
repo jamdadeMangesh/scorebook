@@ -8,7 +8,7 @@ import { persistor } from "../../store/store";
 import useFunctions from "../../hooks/useFunctions";
 import useAutoSaveMatch from "../../hooks/useAutoSaveMatch";
 import { calculateOvers, Match } from "../../interfaces/MatchData";
-import { completeInning, save_match } from "../../store/Slice/MatchSlice";
+import { completeInning, endMatch, resetMatch } from "../../store/Slice/MatchSlice";
 import {
 	Dialog,
 	DialogBackdrop,
@@ -64,30 +64,43 @@ const Header = () => {
 	//auto save match after 3 seconds
 	useAutoSaveMatch();
 
+
 	const saveInning = () => {
 		dispatch(completeInning())
 		setOpenConfirmModal(false);
 	};
-	// const switchInning = () => [
-	// 	dispatch(
-	// 		switch_inning({
-	// 			matchId: getCurrntMatchId,
-	// 			currentInning: getCurrentInning,
-	// 		})
-	// 	),
-	// ];
 
-	const submitSaveForm = (data) => {
-		console.log('data;', data?.matchWonBy);
-		console.log('getMatchData;', getMatchData);
-		//const saveMatchData = dispatch(save_match({ matchResult: data }))
-		let matchList: Match[] = JSON.parse(localStorage.getItem('MatchData') || '[]');
-		console.log('matchList:', matchList);
-		matchList?.push(getMatchData);
-		// if (saveMatchData) {
-		// 	localStorage.setItem("MatchData", JSON.stringify(matchList));
-		// }
+	const submitSaveForm = async (data) => {
+		const finalMatchData = {
+			...getAllData,
+			isMatchCompleted: true,
+			result: {
+				wonBy: data.matchWonBy,
+				description: data?.resultDescription
+			},
+			innings: {
+				...getAllData.innings,
+				inning2: {
+					...getAllData.innings.inning2,
+					completed: true
+				}
+			}
+		}
+
+		await fetch('/api/save-match', {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ matchData: finalMatchData })
+		})
+
+		dispatch(endMatch(finalMatchData.result));
+		dispatch(resetMatch());
+
 		setEndMatchOpenConfirmModal(false);
+		notify("Match saved successfully", "success");
+		navigate("/matches");
 	}
 
 	const getValidBalls = () => {
@@ -95,13 +108,9 @@ const Header = () => {
 	}
 
 	const EndMatch = (data) => {
-
-		//setEndMatchOpenConfirmModal(false)
 	}
 
 	const onSavMatch = async () => {
-		console.log('getAllData:', getAllData);
-
 		const res = await fetch('/api/save-match', {
 			method: "POST",
 			headers: {
@@ -272,7 +281,7 @@ const Header = () => {
 								<div className="bg-gray-100 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
 									<button
 										type="submit"
-										//onClick={EndMatch}
+										onClick={EndMatch}
 										className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
 									>
 										End & Save Match

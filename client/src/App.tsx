@@ -5,6 +5,7 @@ import { Home } from './Views/Home/Home';
 import Dashboard from './Views/Dashboard/Dashboard';
 import AddNew from './Views/AddNew/AddNew';
 import { ToastWrapper } from './Components/Toast/Toast';
+import PreviousMatches from './Views/PreviousMatches/PreviousMatches';
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                     <Route path='/' element={<Home />}></Route>
                     <Route path='/dashboard' element={<Dashboard />}></Route>
                     <Route path='/addNew' element={<AddNew />}></Route>
+                    <Route path='/matches' element={<PreviousMatches />}></Route>
                 </Routes>
             </Router>
             <ToastWrapper />

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Inning, Match, Statistics } from "../../interfaces/MatchData";
-import { add_statistics, set_inning, setMatch, setMatchTeams, setToss } from "../../store/Slice/MatchSlice";
+import { add_statistics, set_inning, setMatch, setMatchStarted, setMatchTeams, setToss } from "../../store/Slice/MatchSlice";
 import { getTeams, Team } from "../../api/teamApi";
 import { notify } from "../../Components/Toast/Toast";
 
@@ -45,25 +45,10 @@ const InfoModal = ({ showModal, setShowModal }: InfoModalProps) => {
 
     const submitForm = (data: Statistics) => {
         reset();
-        //   onFormSubmit(data);
-        // const matchData = {
-        //     team1: data?.team1,
-        //     team2: data?.team2,
-        //     tossWonBy: data?.tossWonBy,
-        //     teamBatting: data?.teamBatting,
-        //     teamBowling: data?.teamBowling,
-        //     remarks: data?.remarks,
-        //     teamBattingSecond: data?.teamBowling,
-        //     teamBowlingSecond: data?.teamBatting,
-        //     isFirstInningCompleteed: false,
-        // };
-
-        //localStorage.setItem("MatchData", JSON.stringify(matchData));
-        //dispatch(add_statistics(matchData));
-        console.log('form data:', data)
         dispatch(setMatchTeams({ team1: data?.team1, team2: data?.team2 }));
         dispatch(setToss({ tossWonBy: data?.tossWonBy, electedTo: data?.electedTo }));
         dispatch(setMatch({ matchId: nanoid() }))
+        dispatch(setMatchStarted(true))
 
 
         navigate("/dashboard");

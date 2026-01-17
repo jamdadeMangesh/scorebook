@@ -12,8 +12,6 @@ const Statistics = () => {
     const overs = getBattingData[getCurrentInning]?.overs;
     const totalOvers: any = calculateOvers(overs);
 
-    console.log('getBowlingData;', getBowlingData);
-
     const getMaximumRunsBatsman = () => {
         const moreRunsData = getBattingData?.reduce((maxBatsman: any, batsman: any) => {
             return batsman.runs > maxBatsman.runs ? batsman : maxBatsman;
@@ -36,7 +34,6 @@ const Statistics = () => {
         }
     }
 
-    console.log('getBowlingData:', getBowlingData);
     const getValidBalls = () => {
         return getCurrentInningData?.balls.filter((val: any) => val.isLegal).length;
     }
@@ -93,21 +90,6 @@ const Statistics = () => {
                         </p>
                     </div>
                 </div>
-                {/* <div className="mb-1 text-xs text-gray-600 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
-                    <div className="px-3 py-2 bg-gray-200 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">
-                            Most Catches
-                        </h3>
-                    </div>
-                    <div className="px-3 py-2">
-                        <p>
-                            Mangesh Jamdade :{" "}
-                            <span className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">
-                                3 Catches
-                            </span>
-                        </p>
-                    </div>
-                </div> */}
             </div>
         </>
     );

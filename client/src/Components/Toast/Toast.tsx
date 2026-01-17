@@ -7,7 +7,7 @@ const defaultOptions: ToastOptions = {
     position: "top-center",
     autoClose: 5000,
     hideProgressBar: true,
-    closeOnClick: false,
+    closeOnClick: true,
     pauseOnHover: false,
     draggable: false,
     progress: undefined,

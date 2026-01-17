@@ -80,8 +80,6 @@ const Wickets = () => {
                 }
             }))
         }
-        console.log('wickets:batsmanId:bowlerId:', wickets, getBatsmanOnStrike(), getBowlerOnStrike());
-        //
 
         setWickets('')
     };
@@ -96,7 +94,6 @@ const Wickets = () => {
         })
     }
 
-    console.log('runoutRuns:', runoutRuns)
     return (
         <>
             <div className="flex justify-between items-center border-b pb-2 border-gray-300 border-spacing-2">

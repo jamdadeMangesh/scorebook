@@ -14,6 +14,7 @@ const AddPlayer = () => {
         formState: { errors },
     } = useForm();
 
+    //fetch teams
     const fetchTeams = async () => {
         try {
             const res = await getTeams();
@@ -28,8 +29,7 @@ const AddPlayer = () => {
         fetchTeams();
     }, []);
 
-    console.log('teams:', teams);
-
+    //add players
     const submitForm = async (data: any) => {
 
         const res = await fetch('/api/add-players', {

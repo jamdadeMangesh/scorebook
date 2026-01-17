@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../Components/Header/Header";
 import Batting from "../Batting/Batting";
 import Bowling from "../Bowling/Bowling";
@@ -8,22 +8,22 @@ import Statistics from "../Statistics/Statistics";
 import Wickets from "../Wickets/Wickets";
 import useFunctions from "../../hooks/useFunctions";
 import Timeline from "../Timeline/Timeline";
-import { useDispatch } from "react-redux";
-import { switch_inning } from "../../store/Slice/MatchSlice";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-    const { getStatistics, getCurrentInning, getCurrntMatchId, getBattingData } = useFunctions();
-    const dispatch = useDispatch();
+    const { getStatistics, getCurrentInning, getAllData, isMatchStarted } = useFunctions();
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!isMatchStarted) {
+            navigate("/")
+        }
+    }, [isMatchStarted, navigate]);
+
 
     const switchInning = () => {
         if (getStatistics.isFirstInningCompleteed) {
-            // dispatch(
-            //     switch_inning({
-            //         matchId: getCurrntMatchId,
-            //         currentInning: getCurrentInning,
-            //     })
-            // );
+            //
         } else {
             toast.warn("First inning is not completed!", {
                 position: "top-center",
@@ -41,7 +41,7 @@ const Dashboard = () => {
     const calculateToWinRuns = () => {
 
         if (getCurrentInning === "inning2") {
-            return getStatistics.teamBattingSecond + " needs " + (getBattingData?.inning1?.score + 1) + " to win in " + 7 * 6 + "  balls";
+            return getStatistics.teamBattingSecond + " needs " + (getAllData?.innings?.inning1?.totalRuns + 1) + " to win in " + 7 * 6 + "  balls";
         }
     }
 

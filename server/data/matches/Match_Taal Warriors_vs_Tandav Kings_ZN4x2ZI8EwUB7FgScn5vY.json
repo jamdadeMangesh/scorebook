@@ -1,0 +1,138 @@
+{
+  "id": "ZN4x2ZI8EwUB7FgScn5vY",
+  "inningNumber": "inning2",
+  "statistics": {
+    "team1": "Taal Warriors",
+    "team2": "Tandav Kings",
+    "tossWonBy": "Taal Warriors",
+    "electedTo": "Batting",
+    "remarks": "",
+    "teamBatting": "Taal Warriors",
+    "teamBowling": "Tandav Kings",
+    "teamBattingSecond": "Tandav Kings",
+    "teamBowlingSecond": "Taal Warriors",
+    "isFirstInningCompleteed": true
+  },
+  "isMatchStarted": true,
+  "isMatchCompleted": true,
+  "innings": {
+    "inning1": {
+      "battingData": [
+        {
+          "id": "-ICTEHW-VtbkXjRm3OgEU",
+          "batsmanName": "Sakshi Patil",
+          "runs": 12,
+          "balls": 6,
+          "fours": 1,
+          "sixes": 0,
+          "eights": 0,
+          "strikeRate": "200.00",
+          "out": "-",
+          "bowler": "-",
+          "onStrike": true
+        }
+      ],
+      "bowlingData": [
+        {
+          "id": "zDso2cpc56j7yC8gr9sOl",
+          "bowlerName": "Gayatri Potdar",
+          "balls": 6,
+          "runs": 12,
+          "wickets": 0,
+          "extras": 0,
+          "currentBowler": false
+        }
+      ],
+      "balls": [
+        {
+          "batRuns": 3,
+          "isLegal": true
+        },
+        {
+          "batRuns": 2,
+          "isLegal": true
+        },
+        {
+          "batRuns": 4,
+          "isLegal": true
+        },
+        {
+          "batRuns": 2,
+          "isLegal": true
+        },
+        {
+          "batRuns": 1,
+          "isLegal": true
+        },
+        {
+          "batRuns": 0,
+          "isLegal": true
+        }
+      ],
+      "totalRuns": 12,
+      "wickets": 0,
+      "completed": true
+    },
+    "inning2": {
+      "battingData": [
+        {
+          "id": "T5HfWRUlsZAzdAnWetYdY",
+          "batsmanName": "Gayatri Potdar",
+          "runs": 2,
+          "balls": 1,
+          "fours": 0,
+          "sixes": 0,
+          "eights": 0,
+          "strikeRate": "200.00",
+          "out": "-",
+          "bowler": "-",
+          "onStrike": true
+        }
+      ],
+      "bowlingData": [
+        {
+          "id": "vKgNOwK1Gk_QBoIMqCuOP",
+          "bowlerName": "Sakshi Patil",
+          "balls": 1,
+          "runs": 2,
+          "wickets": 0,
+          "extras": 0,
+          "currentBowler": true
+        }
+      ],
+      "balls": [
+        {
+          "batRuns": 4,
+          "isLegal": true
+        },
+        {
+          "batRuns": 4,
+          "isLegal": true
+        },
+        {
+          "batRuns": 4,
+          "isLegal": true
+        },
+        {
+          "batRuns": 2,
+          "isLegal": true
+        },
+        {
+          "batRuns": 2,
+          "isLegal": true
+        }
+      ],
+      "totalRuns": 16,
+      "wickets": 0,
+      "completed": true
+    }
+  },
+  "_persist": {
+    "version": -1,
+    "rehydrated": true
+  },
+  "result": {
+    "wonBy": "Tandav Kings",
+    "description": "Won by 6 wickets"
+  }
+}
